@@ -11,3 +11,7 @@ Photos présentes dans la maquette Claude Design fournie. Elles illustrent l’a
 - reference-07.jpg : https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=800&q=80&auto=format&fit=crop
 - reference-08.jpg : https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80&auto=format&fit=crop
 - reference-09.jpg : https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80&auto=format&fit=crop
+
+## Illustrations de services — 15 octobre 2026
+
+service-interieur.jpg, service-faience.jpg et service-terrasse.jpg : images générées pour illustrer les prestations, sans représenter des chantiers réellement exécutés par Pascal. PNG originaux conservés ; JPEG optimisés pour le site. Les pages les identifient comme images d’illustration.

@@ -59,3 +59,11 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - À y = 4118, les deux textes visibles ont leurs boîtes entièrement dans le viewport. À y = 5101, aucun texte tronqué ne persiste et les prestations restent opaques.
 - Les simulations vérifient aussi que toute boîte de texte encore visible tient dans la zone utile, avec marge, aux dimensions testées.
 - Trois aperçus d’images clés ont été générés : grille à plat, sol seul en perspective et pièce carrelée. Ils ne sont pas encore branchés au site ; aucune vidéo de transition n’est annoncée comme terminée.
+
+## Révision 5 — images et retour de navigation
+
+- Trois illustrations générées intégrées aux pages de services et reprises dans le carrousel ; JPEG locaux, dimensions indiquées et recadrage sans étirement.
+- Numéro et adresse e-mail retirés du texte visible de toutes les pages, y compris pages légales ; liens de contact conservés sous des libellés. Les coordonnées restent publiques dans les liens techniques, pas des secrets.
+- Historique : capture de la position au pointerdown avant un éventuel scroll de focus, conservation à la sortie, restauration après polices et mise en page sur retour navigateur. Bouton Retour sur les pages de services, avec repli vers les prestations lors d’un accès direct.
+- Simulation exécutée : capture avant focus, préservation à pagehide, restauration BFCache exacte, entrée fraîche non déplacée et action Retour.
+- Guide Flow et cinq prompts dans FLOW.md ; six cadres pour préparer les transitions. Aucun clip Flow n’a encore été généré ou intégré.

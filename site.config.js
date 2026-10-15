@@ -9,15 +9,15 @@ window.QUERO_CONFIG = {
     posterUrl: '',
     // Photos de référence de la maquette Claude, à remplacer par les chantiers de Pascal.
     textures: [
-      './assets/photos/reference-01.jpg',
-      './assets/photos/reference-02.jpg',
-      './assets/photos/reference-03.jpg',
-      './assets/photos/reference-04.jpg',
-      './assets/photos/reference-05.jpg',
-      './assets/photos/reference-06.jpg',
-      './assets/photos/reference-07.jpg',
-      './assets/photos/reference-08.jpg',
-      './assets/photos/reference-09.jpg'
+      './assets/photos/service-interieur.jpg',
+      './assets/photos/service-faience.jpg',
+      './assets/photos/service-faience.jpg',
+      './assets/photos/service-interieur.jpg',
+      './assets/photos/service-faience.jpg',
+      './assets/photos/service-interieur.jpg',
+      './assets/photos/service-terrasse.jpg',
+      './assets/photos/service-faience.jpg',
+      './assets/photos/service-faience.jpg'
     ]
   },
   contact: { email: 'querocarrelage@orange.fr' },
