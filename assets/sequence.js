@@ -5,17 +5,17 @@ class TileSequence {
   constructor(props) { this.props = props; }
   mount() {
     this._m = null;
-    const reduced = false;
     const q = s => document.querySelector(s);
     const stage = q('[data-stage]');
     const sticky = q('[data-sticky]');
+    const scene = q('[data-scene]') || sticky;
+    const phase = q('[data-phase]');
     const grid = q('[data-grid]');
     const flat = q('[data-flat]');
     const room = q('[data-room]');
     const roomInner = q('[data-room-inner]');
     const centerTile = q('[data-centertile]');
     const flatsq = q('[data-flatsq]');
-    const contact = null;
     const infos = Array.from(document.querySelectorAll('[data-info]'));
     const layer = q('[data-tilelayer]');
     const tile = q('[data-tile]');
@@ -24,23 +24,24 @@ class TileSequence {
     const heroText = q('[data-herotext]');
     const cells = Array.from(document.querySelectorAll('[data-cell]'));
 
-    const len = Math.max(320, Number(this.props.sequenceLength) || 1000);
-    if (stage) stage.style.height = len + 'vh';
+    const desktopLength = Math.max(360, Number(this.props.sequenceLength) || 600);
+    const mobileLength = Math.max(360, Number(this.props.mobileLength) || 520);
+    const setLength = () => { if (stage) stage.style.height = (window.innerWidth <= 760 ? mobileLength : desktopLength) + 'svh'; };
+    setLength();
 
     const back = q('[data-plane="back"]');
     const wl = q('[data-plane="wleft"]');
     const wr = q('[data-plane="wright"]');
     const cl = q('[data-plane="ceiling"]');
     const GAP = 8;
-    const INFO_POS = [[22, 32], [78, 66], [24, 68], [76, 30]];
     let D = 0, step = 150, cellW = 142;
     const mod = (v, m) => ((v % m) + m) % m;
     const layoutRoom = (vw, ch, cw) => {
       cellW = Math.max(40, Math.round(cw));
       step = cellW + GAP;
       D = Math.round((ch + 3 * step - GAP) / 2);
-      if (sticky) sticky.style.perspective = Math.round(vw * 1.15) + 'px';
-      const img = 'repeating-linear-gradient(180deg,#1E1E1E 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px),repeating-linear-gradient(90deg,#1E1E1E 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px)';
+      if (scene) scene.style.perspective = Math.round(vw * 1.15) + 'px';
+      const img = 'repeating-linear-gradient(180deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px),repeating-linear-gradient(90deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px)';
       [back, wl, wr, cl].forEach(el => { if (el) el.style.backgroundImage = img; });
       if (wl) { wl.style.width = D + 'px'; wl.style.height = '0px'; wl.style.transform = 'rotateY(90deg)'; }
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
@@ -55,13 +56,7 @@ class TileSequence {
         centerTile.style.left = (pxB0 + GAP + col * step) + 'px';
         centerTile.dataset.cellw = String(cellW);
       }
-      infos.forEach((el, k) => {
-        const A = INFO_POS[k] || [50, 50];
-        el.dataset.dx = String((A[0] - 50) / 100 * vw);
-        el.dataset.dy = String((A[1] - 50) / 100 * ch);
-        el.style.transform = 'translate(-50%,-50%) scale(0.34)';
-        el.style.opacity = '0';
-      });
+
     };
 
     const clamp01 = v => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -79,7 +74,7 @@ class TileSequence {
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
       const mobile = vw <= 760;
-      const sd = mobile ? Math.min(vw * 0.38, vh * 0.3) : vh;
+      const sd = mobile ? Math.min(vw * 0.38, vh * 0.3) : Math.min(vh * .82, vw * .58);
       return { w: sd, h: sd, x: mobile ? -sd * .85 : -sd / 2, y: (vh - sd) / 2 };
     };
     const setTile = (r, rot, op) => {
@@ -92,18 +87,6 @@ class TileSequence {
 
     const applyStage = () => {
       if (!stage) return;
-      if (reduced) {
-        stage.style.height = '100svh';
-        if (layer) layer.style.display = 'none';
-        if (room) room.style.display = 'none';
-        if (flat) flat.style.transform = 'none';
-        if (grid) grid.style.transform = 'none';
-        if (slot) slot.style.opacity = '1';
-        if (sticky) sticky.style.backgroundColor = '#FFFFFF';
-        cells.forEach(el => { el.style.filter = 'none'; });
-        if (contact) { contact.style.position = 'relative'; contact.style.marginTop = '0'; contact.style.opacity = '1'; contact.style.transform = 'none'; contact.style.pointerEvents = ''; }
-        return;
-      }
       const vw = window.innerWidth, vh = window.innerHeight;
       const span = stage.offsetHeight - vh;
       const y = window.scrollY;
@@ -113,11 +96,10 @@ class TileSequence {
 
       const a = clamp01(y / (stageStart * 0.55 || 1));
       const b = clamp01((y / (stageStart || 1) - 0.55) / 0.45);
-      const c = clamp01((p - 0.06) / 0.20);
-      const dark = clamp01((p - 0.26) / 0.10);
-      const fold = clamp01((p - 0.36) / 0.09);
-      const cam = clamp01((p - 0.58) / 0.32);
-      const reveal = clamp01((p - 0.955) / 0.03);
+      const c = clamp01(p / 0.32);
+      const dark = clamp01((p - 0.32) / 0.08);
+      const fold = clamp01((p - 0.40) / 0.09);
+      const cam = clamp01((p - 0.61) / 0.32);
 
       if (heroText) {
         const ht = clamp01(y / (vh * 0.8));
@@ -181,9 +163,9 @@ class TileSequence {
           const sx = (M.gLeft + gx + col * step) / (vw || 1);
           const w = clamp01(sx * 0.8 + (row / (rows - 1)) * 0.2);
           const local = clamp01((dark - w * 0.5) / 0.5);
-          el.style.filter = local > 0 ? 'brightness(' + (1 - local).toFixed(3) + ')' : 'none';
+          el.style.filter = local > 0 ? 'brightness(' + (1 - local * .78).toFixed(3) + ')' : 'none';
         });
-        const gj = Math.round(255 + (30 - 255) * ease(dark));
+        const gj = Math.round(255 + (72 - 255) * ease(dark));
         if (grid) grid.style.backgroundColor = 'rgb(' + gj + ',' + gj + ',' + gj + ')';
         const bg = Math.round(255 * (1 - ease(dark)));
         if (sticky) sticky.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
@@ -195,16 +177,16 @@ class TileSequence {
       const P0 = vw * 1.15;
       const S0 = P0 / (P0 + D);
       const Send = Math.max(S0 + 0.1, 0.8 * vh / (cellW || 1));
-      const camAll = clamp01((p - 0.58) / 0.32);
+      const camAll = cam;
       const Sn = S0 + (Send - S0) * camAll;
       const roomZ = D + P0 - P0 / Sn;
 
       if (flat) flat.style.transform = 'translateZ(' + roomZ + 'px) rotateX(' + (90 * eF) + 'deg)';
       if (roomInner) roomInner.style.transform = 'translateZ(' + roomZ + 'px)';
 
-      const eW = ease(clamp01((p - 0.45) / 0.06));
+      const eW = ease(clamp01((p - 0.49) / 0.06));
       const eL = eW, eB = eW;
-      const eC = ease(clamp01((p - 0.51) / 0.04));
+      const eC = ease(clamp01((p - 0.55) / 0.06));
       const pxB = mod(vw / 2 - (GAP + step) / 2, step) - step;
       const setH = (el, h, full, px) => {
         if (!el) return;
@@ -221,24 +203,27 @@ class TileSequence {
         cl.style.backgroundPosition = pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px';
       }
 
-      /* temps 4 : les infos approchent, grossissent et sortent par les bords */
-      if (infos.length) {
-        const n = infos.length;
-        const win = 1 / n;
-        infos.forEach((el, i2) => {
-          const t = clamp01((cam - i2 * win) / win);
-          const sc = 0.62 / (1 - 0.955 * t);
-          const dx = Number(el.dataset.dx || 0) * (sc - 1) * 1.4;
-          const dy = Number(el.dataset.dy || 0) * (sc - 1) * 1.4;
-          const on = t > 0.001 ? clamp01(t / 0.05) : 0;
-          el.style.opacity = String(on);
-          el.style.transform = 'translate(-50%,-50%) translate(' + dx + 'px,' + dy + 'px) scale(' + sc.toFixed(3) + ')';
-        });
+      // Text lives outside the perspective scene: the walls can never occlude it.
+      // Each message has an entrance, a readable hold and a bounded exit.
+      infos.forEach((el, index) => {
+        const raw = cam * infos.length - index;
+        const visible = raw > 0 && raw < 1;
+        const t = clamp01(raw);
+        const entrance = ease(clamp01(t / .18));
+        const exit = ease(clamp01((t - .78) / .22));
+        el.style.opacity = visible ? String(entrance * (1 - exit)) : '0';
+        const scale = .94 + .06 * entrance + .06 * exit;
+        el.style.transform = 'translate(-50%, calc(-50% + ' + (22 * (1 - entrance) - 18 * exit).toFixed(2) + 'px)) scale(' + scale.toFixed(3) + ')';
+        el.style.visibility = visible ? 'visible' : 'hidden';
+      });
+      if (phase) {
+        phase.textContent = p < .4 ? '01 / Les savoir-faire' : p < .61 ? '02 / L’espace prend forme' : p < .93 ? '03 / Votre chantier' : '04 / Parlons de votre projet';
+        phase.style.color = p < .36 ? '#555' : '#c9c9c6';
       }
 
       /* raccord : le décor 3D cède la place à un carré plein agrandi en 2D */
-      const post = clamp01((p - 0.90) / 0.055);
-      const swap = p >= 0.90;
+      const post = clamp01((p - 0.93) / 0.06);
+      const swap = p >= 0.93;
       if (room) room.style.visibility = swap ? 'hidden' : 'visible';
       if (flat) flat.style.visibility = swap ? 'hidden' : 'visible';
       if (layer) layer.style.visibility = swap ? 'hidden' : 'visible';
@@ -255,7 +240,7 @@ class TileSequence {
         const J = Math.max(1, GAP * Q.s / (cellW || 1));
         const pitch = Q.s + J;
         const px = (Q.x - Q.s / 2 - J), py = (Q.y - Q.s / 2 - J);
-        const img = 'repeating-linear-gradient(180deg,#1E1E1E 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px),repeating-linear-gradient(90deg,#1E1E1E 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px)';
+        const img = 'repeating-linear-gradient(180deg,#484848 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px),repeating-linear-gradient(90deg,#484848 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px)';
         if (this._sqi !== img) { this._sqi = img; flatsq.style.backgroundImage = img; }
         flatsq.style.backgroundPosition = px + 'px ' + py + 'px,' + px + 'px ' + py + 'px';
         flatsq.style.transformOrigin = Q.x + 'px ' + Q.y + 'px';
@@ -265,13 +250,7 @@ class TileSequence {
       }
       if (sticky) sticky.style.visibility = 'visible';
 
-      if (contact) {
-        contact.style.transform = 'none';
-        const ct = contact.getBoundingClientRect().top;
-        contact.style.transform = p > 0.9 && ct > 0 ? 'translateY(' + (-ct) + 'px)' : 'none';
-        contact.style.opacity = String(reveal);
-        contact.style.pointerEvents = reveal > 0.5 ? '' : 'none';
-      }
+
     };
 
     const applyBar = () => {
@@ -289,7 +268,7 @@ class TileSequence {
       if (mobileBar) mobileBar.hidden = window.innerWidth > 760 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
     };
     const schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(render); };
-    const resize = () => { this._m = null; this._dk = null; this._sq = null; schedule(); };
+    const resize = () => { setLength(); this._m = null; this._dk = null; this._sq = null; schedule(); };
     this.destroy = () => {
       cancelAnimationFrame(this._raf);
       window.removeEventListener('scroll', schedule);
@@ -320,7 +299,7 @@ function init() {
   document.documentElement.classList.remove('has-motion');
   if (media.matches) return;
   try {
-    sequence = new TileSequence({sequenceLength:window.QUERO_CONFIG?.animation?.lengthVh || 1000});
+    sequence = new TileSequence({sequenceLength:window.QUERO_CONFIG?.animation?.lengthVh || 600, mobileLength:window.QUERO_CONFIG?.animation?.mobileLengthVh || 520});
     document.documentElement.classList.add('has-motion');
     sequence.mount();
   } catch (error) {

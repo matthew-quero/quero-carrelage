@@ -1,7 +1,8 @@
 /* Configuration publique uniquement. Ne jamais placer de clé privée ici. */
 window.QUERO_CONFIG = {
   animation: {
-    lengthVh: 1000,
+    lengthVh: 600,
+    mobileLengthVh: 520,
     // Laisser vide pour conserver la séquence de carreaux en CSS 3D.
     // Exemple de chemin local après ajout de votre vidéo : './assets/pose.mp4'.
     videoUrl: '',

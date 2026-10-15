@@ -12,10 +12,10 @@
 <meta property="og:description" content="Pascal Quéro, artisan carreleur en Côtes-d’Armor. Un seul interlocuteur pour votre chantier.">
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
-<link rel="stylesheet" href="./assets/site.css">
-<script src="./site.config.js" defer></script>
-<script src="./assets/site.js" defer></script>
-<script src="./assets/sequence.js" defer></script>
+<link rel="stylesheet" href="./assets/site.css?v=2">
+<script src="./site.config.js?v=2" defer></script>
+<script src="./assets/site.js?v=2" defer></script>
+<script src="./assets/sequence.js?v=2" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#contact">Aller à la demande de devis</a>
@@ -54,8 +54,9 @@
         <span style="width:13px;height:13px;background:#1A1A1A;transform:rotate(45deg);display:block;flex:none"></span>
         <span style="font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;letter-spacing:-0.01em;text-transform:uppercase">Quéro Carrelage</span>
       </a>
-      <nav aria-label="Navigation principale" style="display:flex;align-items:center;gap:16px">
-        <a href="#contact" style="font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:14px;letter-spacing:0.02em;text-transform:uppercase;border-bottom:2px solid #1A1A1A;padding-bottom:2px">Demander un devis</a>
+      <nav aria-label="Navigation principale" style="display:flex;align-items:center;gap:24px">
+        <a class="nav-services" href="#savoir-faire">Savoir-faire</a>
+        <a class="nav-quote" href="#contact" style="font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:14px;letter-spacing:0.02em;text-transform:uppercase;border-bottom:2px solid #1A1A1A;padding-bottom:2px">Demander un devis</a>
       </nav>
     </div>
   </header>
@@ -66,20 +67,22 @@
 
   <main id="main">
   <section id="haut" tabindex="-1" style="position:relative;min-height:100svh;max-width:1600px;margin:0 auto;padding:clamp(26px,5vw,54px) 16px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));align-items:center;direction:rtl">
-    <div data-herotext="1" style="direction:ltr;position:relative;z-index:6;will-change:transform">
-      <h1 style="margin:0;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(30px,7.6vw,96px);line-height:1.05;letter-spacing:-0.035em;max-width:15ch">23 ans que je pose des carreaux en Côtes-d'Armor.</h1>
-      <p style="margin:clamp(20px,3.4vw,38px) 0 0;font-size:clamp(15.5px,3.9vw,20px);line-height:1.5;max-width:42ch;color:#4A4A4A">Pascal Quéro, carreleur à Châtelaudren-Plouagat. Je travaille seul, de la préparation du support à la dernière coupe.</p>
+    <div class="hero-copy" data-herotext="1" style="direction:ltr;position:relative;z-index:6;will-change:transform">
+      <p class="hero-location">Châtelaudren-Plouagat · Côtes-d’Armor</p>
+      <h1 style="margin:0;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(30px,7.6vw,96px);line-height:1.05;letter-spacing:-0.035em;max-width:15ch"><span class="hero-title-line">Carreleur</span><span class="hero-title-line">depuis 23 ans.</span></h1>
+      <p class="hero-intro" style="margin:clamp(20px,3.4vw,38px) 0 0;font-size:clamp(15.5px,3.9vw,20px);line-height:1.5;max-width:42ch;color:#4A4A4A">Pascal Quéro. Un seul artisan, de la préparation du support à la dernière coupe.</p>
       <div style="display:flex;margin-top:clamp(22px,3vw,34px)">
-        <a href="#contact" style="background:#1A1A1A;color:#FFFFFF;padding:19px 34px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase" class="hover-1">Demander un devis</a>
+        <a href="#contact" style="background:#1A1A1A;color:#FFFFFF;padding:19px 34px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase" class="hover-1 button-primary">Demander un devis</a>
       </div>
     </div>
     <div aria-hidden="true" style="direction:ltr;min-height:46vh"></div>
   </section>
 
-  <p class="scroll-cue">Du premier carreau à la dernière coupe <span aria-hidden="true">↓</span><a href="#contact">Passer l’animation ↗</a></p>
-  <section aria-label="Les savoir-faire de Quéro Carrelage" data-stage="1" style="position:relative;height:480vh">
+  <p class="scroll-cue">Un carreau. Tout un espace. <span aria-hidden="true">↓</span><a href="#savoir-faire">Passer l’animation ↗</a></p>
+  <section aria-hidden="true" data-stage="1" style="position:relative;height:480vh">
     <div data-sticky="1" style="position:sticky;top:57px;height:calc(100svh - 57px);overflow:hidden;background:#FFFFFF;perspective:1600px;perspective-origin:50% 45%">
 
+      <div class="sequence-scene" data-scene="1">
       <video id="scroll-video" hidden muted playsinline preload="metadata" aria-label="La pose du carrelage, étape par étape"></video>
       <div data-flat="1" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-origin:50% 100%">
         <div data-grid="1" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,calc((100svh - 73px)/3));grid-auto-columns:calc((100svh - 73px)/3);gap:8px;flex:none">
@@ -144,23 +147,46 @@
             <div data-centertile="1" style="position:absolute;left:0;bottom:0;width:10px;height:10px;background:#000000;opacity:0"></div>
           </div>
         </div>
-          <p data-info="1" style="position:absolute;left:22%;top:32%;margin:0;opacity:0;width:11ch;text-align:center;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(26px,5.2vw,76px);line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF;transform:translate(-50%,-50%)">23 ans de métier</p>
-          <p data-info="1" style="position:absolute;left:78%;top:66%;margin:0;opacity:0;width:11ch;text-align:center;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(26px,5.2vw,76px);line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF;transform:translate(-50%,-50%)">Artisan seul, du support à la dernière coupe</p>
-          <p data-info="1" style="position:absolute;left:24%;top:68%;margin:0;opacity:0;width:11ch;text-align:center;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(26px,5.2vw,76px);line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF;transform:translate(-50%,-50%)">Assuré décennale</p>
-          <p data-info="1" style="position:absolute;left:76%;top:30%;margin:0;opacity:0;width:11ch;text-align:center;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(26px,5.2vw,76px);line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF;transform:translate(-50%,-50%)">Devis gratuit</p>
       </div>
 
       <div data-flatsq="1" style="position:absolute;inset:0;background:#000000;opacity:0;will-change:transform"></div>
+      </div>
+      <div class="sequence-copy" data-copy="1">
+        <p data-info="1"><span class="sequence-kicker">L’expérience</span>23 ans de métier.</p>
+        <p data-info="1"><span class="sequence-kicker">Un seul interlocuteur</span>Du support à la dernière coupe.</p>
+        <p data-info="1"><span class="sequence-kicker">La tranquillité</span>Assurance décennale.</p>
+        <p data-info="1"><span class="sequence-kicker">Votre projet</span>Commençons par un devis gratuit.</p>
+      </div>
+      <span class="sequence-phase" data-phase="1">01 / Les savoir-faire</span>
     </div>
   </section>
 
+
+
+<section id="savoir-faire" class="services" aria-labelledby="services-title">
+  <div class="services-heading">
+    <p class="eyebrow">Les savoir-faire</p>
+    <h2 id="services-title" tabindex="-1">Du sol<br>aux murs.</h2>
+    <p>En rénovation comme en neuf, je vous accompagne dans vos projets de carrelage intérieur et extérieur.</p>
+    <a class="text-link" href="#contact">Parlons de votre chantier <span aria-hidden="true">↗</span></a>
+  </div>
+  <ol class="services-list">
+    <li><span aria-hidden="true">01</span><h3>Carrelage intérieur</h3><p>Les sols de vos pièces de vie.</p></li>
+    <li><span aria-hidden="true">02</span><h3>Faïence murale</h3><p>Salle de bain, cuisine et crédence.</p></li>
+    <li><span aria-hidden="true">03</span><h3>Douche à l’italienne</h3><p>Douche et tablettes maçonnées.</p></li>
+    <li><span aria-hidden="true">04</span><h3>Terrasse et dallage</h3><p>Le carrelage de vos espaces extérieurs.</p></li>
+    <li><span aria-hidden="true">05</span><h3>Mosaïque</h3><p>Les petits formats et leurs détails.</p></li>
+    <li><span aria-hidden="true">06</span><h3>Rénovation et neuf</h3><p>De la préparation du support aux finitions.</p></li>
+  </ol>
+  <p class="services-assurances"><span>Un seul interlocuteur</span><span>Assurance décennale</span><span>Devis gratuit</span></p>
+</section>
 
 <section id="avis" class="reviews" hidden aria-labelledby="reviews-title">
   <div class="section-heading"><p class="eyebrow">Leurs projets, leurs mots</p><h2 id="reviews-title">Les avis de mes clients.</h2><a id="google-reviews" class="text-link" hidden target="_blank" rel="noopener noreferrer">Voir les avis sur Google ↗</a></div>
   <div id="reviews-list" class="reviews-list"></div>
 </section>
 
-  <section id="contact" aria-labelledby="contact-title" style="position:relative;z-index:20;margin-top:-100svh;min-height:100svh;display:flex;align-items:center;opacity:0;background:#000000;color:#FFFFFF;will-change:transform,opacity">
+  <section id="contact" aria-labelledby="contact-title" style="position:relative;z-index:20;min-height:100svh;display:flex;align-items:center;background:#000000;color:#FFFFFF">
     <div style="width:100%;max-width:1600px;margin:0 auto;padding:clamp(56px,7vw,88px) 16px clamp(50px,8vw,90px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(30px,5vw,64px)">
       <div>
         <h2 id="contact-title" tabindex="-1" style="margin:0 0 24px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(28px,7vw,52px);line-height:0.96;letter-spacing:-0.035em">Demander un devis</h2>
@@ -199,7 +225,7 @@
             </label>
             <p id="form-note" class="form-note">Votre demande s’ouvrira dans votre messagerie. Vous pourrez la vérifier avant de l’envoyer.</p>
 <p id="form-status" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
-<button type="submit" style="border:1px solid #FFFFFF;background:#1A1A1A;color:#FFFFFF;padding:19px 22px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase;cursor:pointer;transition:background .2s ease,color .2s ease" class="hover-2">Préparer ma demande par e-mail ↗</button>
+<button type="submit" style="border:1px solid #FFFFFF;background:#1A1A1A;color:#FFFFFF;padding:19px 22px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase;cursor:pointer;transition:background .2s ease,color .2s ease" class="hover-2 button-submit">Préparer ma demande par e-mail ↗</button>
           </form>
         
       </div>
