@@ -17,7 +17,7 @@ Puis ouvrir http://localhost:8000.
 ## Ce qui a changé
 
 - Suppression du moteur et des balises propriétaires Claude Design.
-- Conservation du carré d’ouverture, de la grille, du passage au noir, du sol qui bascule et de la pièce 3D. Les textes sont projetés à différentes profondeurs sur un calque indépendant : ils grossissent en même temps que la caméra avance et se chevauchent.
+- Conservation du carré d’ouverture, de la grille, du passage au noir, du sol qui bascule et de la pièce 3D. Les textes sont projetés à différentes profondeurs sur un calque indépendant : ils grossissent en même temps que la caméra avance et se chevauchent. Ils disparaissent avant le débordement.
 - Séquence raccourcie de 40 % sur ordinateur, plans noirs mieux différenciés, premier écran allégé et prestations consultables dans une section fixe.
 - Une seule mise à jour par image lors du défilement ; aucune boucle d'animation permanente au repos.
 - Recalcul de la géométrie au redimensionnement et au chargement des polices.
@@ -30,6 +30,14 @@ Puis ouvrir http://localhost:8000.
 - Retrait de la bande entre accueil et mosaïque, des surtitres et des numéros. Prestations avec survol et liens vers le devis.
 - Fin de scène superposée avec la vraie section des prestations pour éviter le viewport noir vide.
 - Pages légales conservées et liens réparés. Les informations de l'export n'ont pas été vérifiées auprès de l'entreprise.
+
+## Pages de services
+
+- `carrelage-interieur.html` : sols, neuf et rénovation.
+- `faience-douche.html` : faïence, douche à l’italienne, crédence et mosaïque.
+- `terrasse-carrelage.html` : terrasse et dallage extérieur.
+
+Les tuiles utiles et la liste fixe renvoient à ces pages. Le plan de contenu et les recherches regroupées sont dans [docs/SEO-PAGES.md](docs/SEO-PAGES.md). Les pages restent non indexables pendant la phase de test.
 
 ## Configuration
 

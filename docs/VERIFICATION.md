@@ -54,3 +54,8 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - Contenus et groupes de recherches décrits dans SEO-PAGES.md. Indexation du prototype toujours désactivée.
 
 - Contrôle dans Chrome : le contour du hero est absent ; la tuile « Faïence murale » ouvre la page attendue, dont le rendu est lisible. Le contrôle a repéré dix pixels de dépassement vertical de la grille dû à l’ancienne hauteur de header codée en dur : le calcul des trois rangées utilise désormais la hauteur réelle.
+
+- Contrôle final publié dans Chrome à 1363 × 936 : la première tuile de carrelage intérieur est entière et un clic direct ouvre carrelage-interieur.html ; les trois pages sont accessibles et lisibles.
+- À y = 4118, les deux textes visibles ont leurs boîtes entièrement dans le viewport. À y = 5101, aucun texte tronqué ne persiste et les prestations restent opaques.
+- Les simulations vérifient aussi que toute boîte de texte encore visible tient dans la zone utile, avec marge, aux dimensions testées.
+- Trois aperçus d’images clés ont été générés : grille à plat, sol seul en perspective et pièce carrelée. Ils ne sont pas encore branchés au site ; aucune vidéo de transition n’est annoncée comme terminée.
