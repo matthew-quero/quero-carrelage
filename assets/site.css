@@ -128,3 +128,6 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 
 .contact-action{display:inline-flex;align-items:center;align-self:flex-start;gap:16px;font-family:var(--font-body);font-size:22px;font-weight:500;line-height:1.4;border-bottom:1px solid #777;padding:8px 0;color:#fff}.contact-action:hover{color:#ccc;border-color:#fff}
 #contact .contact-action[href]{font-family:var(--font-body)!important;font-style:normal!important;font-weight:500!important;font-size:22px!important;line-height:1.4!important;letter-spacing:0!important}
+
+/* Full-face mineral material: no magnified crop from a white product photo. */
+[data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:url('./photos/carreau-anthracite-hd.webp');background-size:cover;background-position:center}

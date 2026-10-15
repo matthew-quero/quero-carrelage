@@ -44,7 +44,7 @@ class TileSequence {
       D = Math.round((ch + 3 * step - GAP) / 2);
       if (scene) scene.style.perspective = Math.round(vw * 1.15) + 'px';
       const img = 'repeating-linear-gradient(180deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px),repeating-linear-gradient(90deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px)';
-      [back, wl, wr, cl].forEach(el => { if (el) el.style.backgroundImage = img; });
+      [back, wl, wr, cl].forEach(el => { if (el) { el.style.backgroundImage = img + ',url("./assets/photos/carreau-anthracite-hd.webp")'; el.style.backgroundSize = 'auto,auto,' + step + 'px ' + step + 'px'; } });
       if (wl) { wl.style.width = D + 'px'; wl.style.height = '0px'; wl.style.transform = 'rotateY(90deg)'; }
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
       if (back) { back.style.height = '0px'; back.style.transform = 'translateZ(-' + D + 'px)'; }
@@ -59,11 +59,11 @@ class TileSequence {
     const rows = 3;
     let idx, ring, maxD;
     const chooseSlot = () => {
-      if (slot) { slot.style.opacity = '1'; slot.style.backgroundColor = ''; }
+      if (slot) { slot.style.opacity = '1'; slot.style.backgroundColor = ''; slot.classList.remove('material-slot'); }
       const pitch = (cells[0]?.offsetWidth || (window.innerHeight - 73) / 3) + GAP;
       idx = Math.min(cells.length-1, Math.floor(window.innerWidth / 2 / pitch) * rows + 1);
       slot = cells[idx];
-      if (slot) slot.style.backgroundColor = '#1a1a1a';
+      if (slot) { slot.style.backgroundColor = '#1a1a1a'; slot.classList.add('material-slot'); }
       ring = cells.map((el,i2) => {
         const dx = Math.floor(i2/rows) - Math.floor(idx/rows), dy = i2%rows - idx%rows;
         return {el,i:i2,dx,dy,d:Math.max(Math.abs(dx),Math.abs(dy))};
