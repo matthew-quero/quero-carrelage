@@ -8,15 +8,15 @@ function layout(){W=innerWidth;H=innerHeight;S=Math.min(W*.14,H*.2);R=S*7;span=t
 function render(){frame=0;const p=clamp(scrollY/span),start=Math.min(H*.65,W*.65),move=ease(p/.25),assembly=ease((p-.24)/.16),fold=ease((p-.42)/.17),walls=ease((p-.58)/.12),zoom=ease((p-.71)/.29);
 const size=lerp(start,S,move),x=lerp(-start*.54,W/2-size/2,move),y=lerp(H*.5-start/2,H/2-size/2,move);
 tile.style.width=size+'px';tile.style.height=size+'px';tile.style.transform=`translate3d(${x}px,${y}px,0) rotate(${lerp(-45,0,move)}deg)`;tile.style.opacity=String(1-ease((p-.25)/.1));intro.style.opacity=String(1-ease(p/.16));intro.style.transform=`translateY(${-40*move}px)`;
-world.style.opacity=String(ease((p-.25)/.08));world.style.transform=`translate3d(0,${lerp(0,H*.12,fold)}px,${zoom*Math.min(W*.35,420)}px)`;
-floor.style.transform=`rotateX(${fold*78}deg)`;
+world.style.opacity=String(ease((p-.25)/.08));world.style.transform=`translate3d(0,${lerp(0,H*.12,fold)}px,${zoom*Math.min(W*.35,420)}px) rotateX(${-fold*12}deg)`;
+floor.style.transform=`rotateX(${fold*90}deg)`;
 [...floor.children].forEach((cell,i)=>{const dx=i%7-3,dy=Math.floor(i/7)-2,d=Math.max(Math.abs(dx),Math.abs(dy)),t=ease((assembly-d*.13)/.5);cell.style.opacity=String(t);cell.style.transform=`translate(${dx*(1-t)*S*.5}px,${dy*(1-t)*S*.5}px) scale(${lerp(.8,1,t)})`});
 // All planes share the floor's exact corners. Room growth is a geometric transform.
-const angle=fold*78*Math.PI/180, depth=S*5*Math.sin(angle), rise=S*5*Math.cos(angle),wallH=S*4;
-$('.back').style.transform=`translate3d(0,${-rise/2-wallH/2*walls}px,${-depth/2}px) scaleY(${walls})`;
+const depth=S*5,wallH=S*4;
+$('.back').style.transform=`translate3d(0,${-wallH/2*walls}px,${-depth/2}px) scaleY(${walls})`;
 $('.left').style.transform=`translate3d(${-R/2}px,${-wallH/2*walls}px,0) rotateY(90deg) scaleY(${walls})`;
 $('.right').style.transform=`translate3d(${R/2}px,${-wallH/2*walls}px,0) rotateY(-90deg) scaleY(${walls})`;
-$('.ceiling').style.transform=`translateY(${-wallH*walls}px) rotateX(90deg)`;
+$('.ceiling').style.transform=`translateY(${-wallH*walls}px) rotateX(-90deg)`;
 planes.slice(1).forEach(el=>el.style.opacity=String(walls));
 const dark=ease((p-.53)/.16);view.style.background=`rgb(${lerp(250,25,dark)},${lerp(250,25,dark)},${lerp(248,25,dark)})`;document.body.classList.toggle('dark',p>.64&&scrollY<span+H*.1);caption.style.opacity=String(ease((p-.28)/.04)*(1-ease((p-.42)/.04)));
 words.forEach((el,i)=>{const t=(p-(.73+i*.075))/.15,scale=lerp(.55,2.8,clamp(t));const opacity=ease(t/.18)*(1-ease((t-.52)/.23));el.style.left=(i%2?33:61)+'%';el.style.top=(i%2?55:34)+'%';el.style.transform=`translate(-50%,-50%) scale(${scale})`;el.style.opacity=String(opacity);if(opacity>0){const r=el.getBoundingClientRect();if(r.left<20||r.right>W-20||r.top<75||r.bottom>H-130)el.style.opacity='0'}});
