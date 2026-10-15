@@ -67,3 +67,5 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - Historique : capture de la position au pointerdown avant un éventuel scroll de focus, conservation à la sortie, restauration après polices et mise en page sur retour navigateur. Bouton Retour sur les pages de services, avec repli vers les prestations lors d’un accès direct.
 - Simulation exécutée : capture avant focus, préservation à pagehide, restauration BFCache exacte, entrée fraîche non déplacée et action Retour.
 - Guide Flow et cinq prompts dans FLOW.md ; six cadres pour préparer les transitions. Aucun clip Flow n’a encore été généré ou intégré.
+
+- Contrôle publié dans Chrome : image de la page intérieure chargée, coordonnées absentes du texte affiché. Depuis le carrousel à y = 1076, ouverture de la tuile « Carrelage intérieur », puis Retour explicite : y = 1076. Même essai avec le Précédent du navigateur : y = 1076. Les deux parcours restaurent exactement la position d’origine.
