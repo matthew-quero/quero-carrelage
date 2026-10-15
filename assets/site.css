@@ -104,3 +104,21 @@ html{scroll-padding-top:var(--header-height)}
  .contact-reviews{margin-top:20px}
 }
 @media(prefers-reduced-motion:reduce){.services-list li a,.services-list li a>span{transition:none}}
+
+/* Programmatic section focus must not draw a frame around the whole hero. */
+section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
+/* The service section is opaque throughout the handoff: no grey double exposure. */
+.services{opacity:1!important}
+[data-info]{text-align:center}
+.tile-link{display:flex;position:relative;align-items:flex-end;width:100%;height:100%;padding:18px;color:inherit;overflow:hidden}
+.tile-link:hover{color:#fff;background:#363636}
+.tile-link:focus-visible{outline:3px solid #fff!important;outline-offset:-7px}
+.tile-caption{display:block;max-width:100%;font:inherit}
+.tile-caption>span{display:inline-block;transition:transform .2s ease}
+.tile-link:hover .tile-caption>span{transform:translate(3px,-3px)}
+.tile-photo{padding:0}
+.tile-photo .tile-texture{transition:transform .35s ease,filter .35s ease}
+.tile-photo:hover .tile-texture{transform:scale(1.045);filter:brightness(.8)}
+.tile-photo-arrow{position:absolute;right:16px;bottom:14px;font-family:var(--font-body);font-size:28px;color:white;opacity:0}
+.tile-photo:hover .tile-photo-arrow,.tile-photo:focus-visible .tile-photo-arrow{opacity:1}
+@media(prefers-reduced-motion:reduce){.tile-photo .tile-texture,.tile-caption>span{transition:none}}

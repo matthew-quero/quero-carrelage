@@ -16,9 +16,12 @@ class TileSequence {
     const room = q('[data-room]');
     const roomInner = q('[data-room-inner]');
     const infos = Array.from(document.querySelectorAll('[data-info]'));
+    const tileLinks = Array.from(document.querySelectorAll('.tile-link'));
+    const captions = Array.from(document.querySelectorAll('.tile-caption'));
+    let textSizes = [];
     const layer = q('[data-tilelayer]');
     const tile = q('[data-tile]');
-    const slot = q('[data-slot="center"]');
+    let slot = q('[data-slot="center"]');
     const bar = q('[data-progress]');
     const heroText = q('[data-herotext]');
     const cells = Array.from(document.querySelectorAll('[data-cell]'));
@@ -54,13 +57,20 @@ class TileSequence {
     const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     const rows = 3;
-    const idx = Math.max(0, cells.indexOf(slot));
-    const ring = cells.map((el, i2) => {
-      const dx = Math.floor(i2 / rows) - Math.floor(idx / rows);
-      const dy = (i2 % rows) - (idx % rows);
-      return { el: el, i: i2, dx: dx, dy: dy, d: Math.max(Math.abs(dx), Math.abs(dy)) };
-    });
-    const maxD = Math.max.apply(null, ring.map(o => o.d));
+    let idx, ring, maxD;
+    const chooseSlot = () => {
+      if (slot) { slot.style.opacity = '1'; slot.style.backgroundColor = ''; }
+      const pitch = (cells[0]?.offsetWidth || (window.innerHeight - 73) / 3) + GAP;
+      idx = Math.min(cells.length-1, Math.floor(window.innerWidth / 2 / pitch) * rows + 1);
+      slot = cells[idx];
+      if (slot) slot.style.backgroundColor = '#1a1a1a';
+      ring = cells.map((el,i2) => {
+        const dx = Math.floor(i2/rows) - Math.floor(idx/rows), dy = i2%rows - idx%rows;
+        return {el,i:i2,dx,dy,d:Math.max(Math.abs(dx),Math.abs(dy))};
+      });
+      maxD = Math.max(...ring.map(o=>o.d));
+    };
+    chooseSlot();
     // Fixed world positions, reused in both scroll directions.
     const infoPositions = [[.19,-.14],[-.21,.15],[.16,.18],[-.17,-.12]];
 
@@ -89,9 +99,10 @@ class TileSequence {
       // The final viewport is shared with the real services section, never an empty screen.
       const handoffStart = Math.max(.5, 1 - ch / (span || 1));
       const handoff = ease(clamp01((p - handoffStart) / (1 - handoffStart)));
-      if (services) services.style.opacity = String(handoff);
+      if (services) services.style.opacity = '1';
       if (scene) scene.style.opacity = String(1 - handoff);
       if (copy) copy.style.opacity = String(1 - handoff);
+      if (copy) copy.style.visibility = y >= stageStart && handoff < 1 ? 'visible' : 'hidden';
       if (window.QueroVideo?.active) { window.QueroVideo.seek(p); return; }
 
       const a = clamp01(y / (stageStart * 0.55 || 1));
@@ -132,7 +143,7 @@ class TileSequence {
           const g = grid.getBoundingClientRect();
           const sr = slot ? slot.getBoundingClientRect() : g;
           const ch0 = sticky ? sticky.clientHeight : vh;
-          const baseX = vw / 2 - (sr.left + sr.width / 2);
+          const baseX = -g.left;
           this._m = { vw: vw, vh: vh, ch: ch0, H: g.height, gLeft: g.left, baseX: baseX, travel: Math.max(0, g.right + baseX - vw) };
           grid.style.transform = prev;
           if (flat) flat.style.transform = previousFlat;
@@ -217,14 +228,36 @@ class TileSequence {
         const spread = vw <= 760 ? .74 : 1;
         el.style.left = (50 + x * 100 * scale * spread).toFixed(3) + '%';
         el.style.top = (48 + y0 * 100 * scale).toFixed(3) + '%';
-        el.style.opacity = visible ? String(far * near * start) : '0';
         el.style.transform = 'translate(-50%, -50%) scale(' + scale.toFixed(4) + ')';
-        el.style.visibility = visible ? 'visible' : 'hidden';
+        // Fade the entire word group before its first edge can be clipped.
+        const size = textSizes[index];
+        const cx = vw * (.5 + x * scale * spread);
+        const cy = M.ch * (.48 + y0 * scale);
+        const halfW = (size?.width || 500) * scale / 2;
+        const halfH = (size?.height || 140) * scale / 2;
+        const clearance = Math.min(cx-halfW, vw-cx-halfW, cy-halfH, M.ch-cy-halfH);
+        const edge = ease(clamp01((clearance - 24) / Math.max(36,vw*.035)));
+        const opacity = visible ? far * near * start * edge : 0;
+        el.style.opacity = String(opacity);
+        el.style.visibility = opacity > .001 ? 'visible' : 'hidden';
       });
       // No state carried over from a previous frame: reverse scroll renders the same scene.
       if (room) room.style.visibility = 'visible';
       if (flat) flat.style.visibility = 'visible';
       if (layer) layer.style.visibility = 'visible';
+
+      tileLinks.forEach(link => {
+        const rect = link.getBoundingClientRect();
+        const usable = p < .33 && y >= stageStart - 20 && rect.left >= 8 && rect.right <= vw - 8 && rect.top >= vh - ch - 2 && rect.bottom <= vh + 2;
+        link.tabIndex = usable ? 0 : -1;
+        link.style.pointerEvents = usable ? 'auto' : 'none';
+        link.setAttribute('aria-hidden', usable ? 'false' : 'true');
+      });
+      captions.forEach(label => {
+        const rect = label.getBoundingClientRect();
+        const safe = rect.left >= 24 && rect.right <= vw - 24 && rect.top >= vh - ch + 8 && rect.bottom <= vh - 8;
+        label.style.visibility = safe && p < .33 ? 'visible' : 'hidden';
+      });
       if (sticky) sticky.style.visibility = 'visible';
 
 
@@ -239,13 +272,14 @@ class TileSequence {
 
     const render = () => {
       this._raf = 0;
+      if (!textSizes.length) textSizes = infos.map(el => ({width:el.offsetWidth,height:el.offsetHeight}));
       applyStage();
       applyBar();
       const mobileBar = document.getElementById('mobile-call');
       if (mobileBar) mobileBar.hidden = window.innerWidth > 760 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
     };
     const schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(render); };
-    const resize = () => { setLength(); document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight) + 'px'); this._m = null; this._dk = null; schedule(); };
+    const resize = () => { setLength(); chooseSlot(); document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight) + 'px'); this._m = null; this._dk = null; textSizes = []; schedule(); };
     this.destroy = () => {
       cancelAnimationFrame(this._raf);
       window.removeEventListener('scroll', schedule);

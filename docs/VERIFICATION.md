@@ -43,3 +43,12 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - Retour du scroll après la transition : à la même position y = 4118, les transformations de la pièce et les styles des quatre textes sont strictement identiques à l’aller.
 - Survol de « Terrasse et dallage » observé : fond noir, texte blanc et flèche. Les lignes de prestations sont des liens accessibles vers le contact.
 - La revue visuelle de cette révision porte sur l’ordinateur ; aucun test sur téléphone réel n’est revendiqué.
+
+## Révision 4 — lisibilité et pages de services
+
+- Suppression du contour de focus des sections ciblées programmatiquement ; focus des liens et formulaires conservé.
+- Mosaïque démarrant au premier bord : les premières prestations sont dans le parcours horizontal, au lieu de commencer au milieu de la grille.
+- Textes de la pièce : mesure de la taille intrinsèque et disparition avant le débordement ; positions et opacité déterministes dans les deux sens.
+- Section de prestations opaque pendant le raccord pour éviter la double exposition grise.
+- Tuiles utiles et liste fixe liées à trois pages réelles. Les tuiles ne sont interactives que lorsqu’elles sont entièrement dans le viewport pendant la phase horizontale.
+- Contenus et groupes de recherches décrits dans SEO-PAGES.md. Indexation du prototype toujours désactivée.
