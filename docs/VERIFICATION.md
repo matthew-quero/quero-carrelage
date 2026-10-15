@@ -14,8 +14,21 @@
 
 ## Limites
 
-Les simulations vérifient la logique et les nombres, pas la disposition ni le rendu CSS 3D d'un navigateur. Aucun navigateur de test adapté n'était disponible dans ce flux. Une revue visuelle desktop/mobile et un essai sur de vrais téléphones restent à faire.
+Les simulations vérifient la logique et les nombres, pas la disposition ni le rendu CSS 3D d'un navigateur. La première livraison avait été contrôlée sans navigateur. Une revue visuelle desktop/mobile et un essai sur de vrais téléphones restent à faire.
 
 Le formulaire et les avis Arazo n'ont pas été testés de bout en bout : leur véritable configuration n'a pas été fournie. Le mode vidéo est préparé dans le code, mais n'a pas été éprouvé avec une vidéo réelle, puisqu'aucun MP4 n'a été transmis.
 
 Les fichiers sont préparés pour une publication sur le dépôt `matthew-quero/quero-carrelage`. L’activation de GitHub Pages et la vérification de son URL publique restent distinctes du transfert des sources.
+
+
+## Révision 2 — contrôle sur le site publié
+
+- Syntaxe JavaScript, structure HTML, ressources locales et nouvelles ancres vérifiées ; simulations de la séquence et du formulaire rejouées avec succès.
+- Premier écran contrôlé dans Chrome à 1363 × 936 : titre sur deux lignes, localisation séparée, bouton visible et absence de débordement horizontal.
+- Textes de la séquence contrôlés visuellement sur la version publiée : le premier et le deuxième message sont lisibles devant le décor 3D. Leur taille reste bornée et leur boîte tient dans le viewport.
+- Présence et lisibilité de la section fixe des six prestations vérifiées ; lien « Savoir-faire » testé.
+- Aucun message d’erreur issu des scripts du site dans la console consultée (un message provenant d’une extension du navigateur est hors périmètre).
+- Décalage cumulé des ancres repéré pendant la revue, puis supprimé : un seul décalage lié à la hauteur du header.
+- Les quatre arguments restent également accessibles hors animation dans l’accueil et la section des prestations.
+
+La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobile réel, le mode vidéo avec un vrai MP4 et la connexion Arazo de bout en bout restent à réaliser.

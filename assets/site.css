@@ -69,3 +69,6 @@ html:not(.has-motion) [data-stage]{display:none!important}
  #contact a[href^="tel:"]{font-size:clamp(32px,8.3vw,58px)!important}
  #contact>div>div:last-child>div>p{font-size:18px!important}
 }
+/* Use one header offset for anchors, rather than adding margin and padding twice. */
+html{scroll-padding-top:var(--header-height)}
+#haut,#savoir-faire,#contact,section:target{scroll-margin-top:0!important}
