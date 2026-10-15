@@ -39,4 +39,7 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - Simulation numérique avant/arrière rejouée : 10 initialisations, 180 positions, 20 comparaisons identiques d’images au retour, 10 redimensionnements, aucun NaN ni Infinity. RAF regroupées et repos sans boucle vérifiés.
 - Simulations formulaire, iframe et avis rejouées avec succès après déplacement des avis dans le contact.
 - Neuf fichiers photo récupérés depuis les URL de la maquette originale, type image et fichiers non vides vérifiés.
-- Revue visuelle de cette révision à compléter après le déploiement.
+- Contrôle visuel sur le site publié dans Chrome à 1363 × 936 : neuf photos chargées, bande blanche et numéros absents, deux textes visibles ensemble à des profondeurs différentes, plans de la pièce visibles et section des prestations apparaissant pendant le fondu.
+- Retour du scroll après la transition : à la même position y = 4118, les transformations de la pièce et les styles des quatre textes sont strictement identiques à l’aller.
+- Survol de « Terrasse et dallage » observé : fond noir, texte blanc et flèche. Les lignes de prestations sont des liens accessibles vers le contact.
+- La revue visuelle de cette révision porte sur l’ordinateur ; aucun test sur téléphone réel n’est revendiqué.
