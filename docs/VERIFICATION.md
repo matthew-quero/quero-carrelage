@@ -32,3 +32,11 @@ Les fichiers sont préparés pour une publication sur le dépôt `matthew-quero/
 - Les quatre arguments restent également accessibles hors animation dans l’accueil et la section des prestations.
 
 La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobile réel, le mode vidéo avec un vrai MP4 et la connexion Arazo de bout en bout restent à réaliser.
+
+## Révision 3 — retours sur la séquence
+
+- Suppression de l’ancien carré final et de ses mesures mémorisées depuis une image précédente : la projection dépend uniquement du scroll et des dimensions actuelles.
+- Simulation numérique avant/arrière rejouée : 10 initialisations, 180 positions, 20 comparaisons identiques d’images au retour, 10 redimensionnements, aucun NaN ni Infinity. RAF regroupées et repos sans boucle vérifiés.
+- Simulations formulaire, iframe et avis rejouées avec succès après déplacement des avis dans le contact.
+- Neuf fichiers photo récupérés depuis les URL de la maquette originale, type image et fichiers non vides vérifiés.
+- Revue visuelle de cette révision à compléter après le déploiement.

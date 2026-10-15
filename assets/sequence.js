@@ -9,13 +9,12 @@ class TileSequence {
     const stage = q('[data-stage]');
     const sticky = q('[data-sticky]');
     const scene = q('[data-scene]') || sticky;
-    const phase = q('[data-phase]');
+    const services = document.getElementById('savoir-faire');
+    const copy = q('[data-copy]');
     const grid = q('[data-grid]');
     const flat = q('[data-flat]');
     const room = q('[data-room]');
     const roomInner = q('[data-room-inner]');
-    const centerTile = q('[data-centertile]');
-    const flatsq = q('[data-flatsq]');
     const infos = Array.from(document.querySelectorAll('[data-info]'));
     const layer = q('[data-tilelayer]');
     const tile = q('[data-tile]');
@@ -47,15 +46,7 @@ class TileSequence {
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
       if (back) { back.style.height = '0px'; back.style.transform = 'translateZ(-' + D + 'px)'; }
       if (cl) { cl.style.height = '0px'; cl.style.transform = 'rotateX(-90deg)'; }
-      if (centerTile) {
-        const pxB0 = mod(vw / 2 - (GAP + step) / 2, step) - step;
-        const col = Math.round((vw / 2 - (pxB0 + GAP + cellW / 2)) / step);
-        centerTile.style.opacity = '0';
-        centerTile.style.width = cellW + 'px';
-        centerTile.style.height = cellW + 'px';
-        centerTile.style.left = (pxB0 + GAP + col * step) + 'px';
-        centerTile.dataset.cellw = String(cellW);
-      }
+
 
     };
 
@@ -70,6 +61,8 @@ class TileSequence {
       return { el: el, i: i2, dx: dx, dy: dy, d: Math.max(Math.abs(dx), Math.abs(dy)) };
     });
     const maxD = Math.max.apply(null, ring.map(o => o.d));
+    // Fixed world positions, reused in both scroll directions.
+    const infoPositions = [[.19,-.14],[-.21,.15],[.16,.18],[-.17,-.12]];
 
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
@@ -88,10 +81,17 @@ class TileSequence {
     const applyStage = () => {
       if (!stage) return;
       const vw = window.innerWidth, vh = window.innerHeight;
-      const span = stage.offsetHeight - vh;
+      const ch = sticky?.clientHeight || vh;
+      const span = stage.offsetHeight - ch;
       const y = window.scrollY;
       const stageStart = stage.getBoundingClientRect().top + y;
       const p = clamp01((y - stageStart) / (span || 1));
+      // The final viewport is shared with the real services section, never an empty screen.
+      const handoffStart = Math.max(.5, 1 - ch / (span || 1));
+      const handoff = ease(clamp01((p - handoffStart) / (1 - handoffStart)));
+      if (services) services.style.opacity = String(handoff);
+      if (scene) scene.style.opacity = String(1 - handoff);
+      if (copy) copy.style.opacity = String(1 - handoff);
       if (window.QueroVideo?.active) { window.QueroVideo.seek(p); return; }
 
       const a = clamp01(y / (stageStart * 0.55 || 1));
@@ -99,7 +99,11 @@ class TileSequence {
       const c = clamp01(p / 0.32);
       const dark = clamp01((p - 0.32) / 0.08);
       const fold = clamp01((p - 0.40) / 0.09);
-      const cam = clamp01((p - 0.61) / 0.32);
+      const cam = clamp01((p - 0.59) / 0.29);
+      const shade = Math.round(255 * (1 - ease(dark) + ease(dark) * handoff));
+      const background = 'rgb(' + shade + ',' + shade + ',' + shade + ')';
+      if (sticky) sticky.style.backgroundColor = background;
+      stage.style.backgroundColor = background;
 
       if (heroText) {
         const ht = clamp01(y / (vh * 0.8));
@@ -167,19 +171,15 @@ class TileSequence {
         });
         const gj = Math.round(255 + (72 - 255) * ease(dark));
         if (grid) grid.style.backgroundColor = 'rgb(' + gj + ',' + gj + ',' + gj + ')';
-        const bg = Math.round(255 * (1 - ease(dark)));
-        if (sticky) sticky.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
-        stage.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
+
       }
 
       /* temps 2 et 3 : bascule du sol puis levée des plans depuis ses arêtes */
       const eF = ease(fold);
       const P0 = vw * 1.15;
-      const S0 = P0 / (P0 + D);
-      const Send = Math.max(S0 + 0.1, 0.8 * vh / (cellW || 1));
-      const camAll = cam;
-      const Sn = S0 + (Send - S0) * camAll;
-      const roomZ = D + P0 - P0 / Sn;
+      const Send = Math.max(1.5, 0.8 * vh / (cellW || 1));
+      // A linear camera advance gives the walls and words the same acceleration in perspective.
+      const roomZ = cam * (D + P0 - P0 / Send);
 
       if (flat) flat.style.transform = 'translateZ(' + roomZ + 'px) rotateX(' + (90 * eF) + 'deg)';
       if (roomInner) roomInner.style.transform = 'translateZ(' + roomZ + 'px)';
@@ -203,51 +203,28 @@ class TileSequence {
         cl.style.backgroundPosition = pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px';
       }
 
-      // Text lives outside the perspective scene: the walls can never occlude it.
-      // Each message has an entrance, a readable hold and a bounded exit.
+      // Project text mathematically into a separate 2D overlay. Walls cannot hide it.
+      // Consecutive depth planes overlap; near words grow past the viewer and disappear.
+      const camera = cam * 5.4;
       infos.forEach((el, index) => {
-        const raw = cam * infos.length - index;
-        const visible = raw > 0 && raw < 1;
-        const t = clamp01(raw);
-        const entrance = ease(clamp01(t / .18));
-        const exit = ease(clamp01((t - .78) / .22));
-        el.style.opacity = visible ? String(entrance * (1 - exit)) : '0';
-        const scale = .94 + .06 * entrance + .06 * exit;
-        el.style.transform = 'translate(-50%, calc(-50% + ' + (22 * (1 - entrance) - 18 * exit).toFixed(2) + 'px)) scale(' + scale.toFixed(3) + ')';
+        const depth = 1.5 + index * 1.15 - camera;
+        const visible = p >= .56 && depth < 2.2 && depth > -.98;
+        const scale = 1.1 / Math.max(.12, 1.1 + depth);
+        const far = ease(clamp01((2.2 - depth) / 1.1));
+        const near = 1 - ease(clamp01((-depth - .30) / .68));
+        const start = ease(clamp01((p - .56) / .04));
+        const [x,y0] = infoPositions[index % infoPositions.length];
+        const spread = vw <= 760 ? .74 : 1;
+        el.style.left = (50 + x * 100 * scale * spread).toFixed(3) + '%';
+        el.style.top = (48 + y0 * 100 * scale).toFixed(3) + '%';
+        el.style.opacity = visible ? String(far * near * start) : '0';
+        el.style.transform = 'translate(-50%, -50%) scale(' + scale.toFixed(4) + ')';
         el.style.visibility = visible ? 'visible' : 'hidden';
       });
-      if (phase) {
-        phase.textContent = p < .4 ? '01 / Les savoir-faire' : p < .61 ? '02 / L’espace prend forme' : p < .93 ? '03 / Votre chantier' : '04 / Parlons de votre projet';
-        phase.style.color = p < .36 ? '#555' : '#c9c9c6';
-      }
-
-      /* raccord : le décor 3D cède la place à un carré plein agrandi en 2D */
-      const post = clamp01((p - 0.93) / 0.06);
-      const swap = p >= 0.93;
-      if (room) room.style.visibility = swap ? 'hidden' : 'visible';
-      if (flat) flat.style.visibility = swap ? 'hidden' : 'visible';
-      if (layer) layer.style.visibility = swap ? 'hidden' : 'visible';
-      if (centerTile) {
-        const k = Math.max(0, Math.round((M.ch - cellW) / 2 / step));
-        centerTile.style.bottom = (M.ch - k * step - cellW) + 'px';
-      }
-      if (!swap && centerTile && sticky) {
-        const rs = sticky.getBoundingClientRect(), rt = centerTile.getBoundingClientRect();
-        if (rt.width > 0) this._sq = { s: rt.width, x: rt.left - rs.left + rt.width / 2, y: rt.top - rs.top + rt.height / 2 };
-      }
-      const Q = this._sq;
-      if (flatsq && Q) {
-        const J = Math.max(1, GAP * Q.s / (cellW || 1));
-        const pitch = Q.s + J;
-        const px = (Q.x - Q.s / 2 - J), py = (Q.y - Q.s / 2 - J);
-        const img = 'repeating-linear-gradient(180deg,#484848 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px),repeating-linear-gradient(90deg,#484848 0 ' + J + 'px,transparent ' + J + 'px ' + pitch + 'px)';
-        if (this._sqi !== img) { this._sqi = img; flatsq.style.backgroundImage = img; }
-        flatsq.style.backgroundPosition = px + 'px ' + py + 'px,' + px + 'px ' + py + 'px';
-        flatsq.style.transformOrigin = Q.x + 'px ' + Q.y + 'px';
-        const fill = Math.max(vw, M.ch) * 2.4 / Math.max(1, Q.s);
-        flatsq.style.opacity = swap ? '1' : '0';
-        flatsq.style.transform = 'scale(' + (1 + (fill - 1) * post).toFixed(3) + ')';
-      }
+      // No state carried over from a previous frame: reverse scroll renders the same scene.
+      if (room) room.style.visibility = 'visible';
+      if (flat) flat.style.visibility = 'visible';
+      if (layer) layer.style.visibility = 'visible';
       if (sticky) sticky.style.visibility = 'visible';
 
 
@@ -268,7 +245,7 @@ class TileSequence {
       if (mobileBar) mobileBar.hidden = window.innerWidth > 760 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
     };
     const schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(render); };
-    const resize = () => { setLength(); this._m = null; this._dk = null; this._sq = null; schedule(); };
+    const resize = () => { setLength(); document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight) + 'px'); this._m = null; this._dk = null; schedule(); };
     this.destroy = () => {
       cancelAnimationFrame(this._raf);
       window.removeEventListener('scroll', schedule);
@@ -276,6 +253,8 @@ class TileSequence {
       window.removeEventListener('load', resize);
       document.fonts?.removeEventListener('loadingdone', resize);
       this._observer?.disconnect();
+      if (services) services.style.opacity = '';
+      if (heroText) { heroText.style.opacity = ''; heroText.style.transform = ''; }
     };
     window.addEventListener('scroll', schedule, { passive:true });
     window.addEventListener('resize', resize, { passive:true });
@@ -286,6 +265,7 @@ class TileSequence {
       const h = Math.ceil(header.getBoundingClientRect().height + 10);
       document.documentElement.style.setProperty('--header-height', h + 'px');
       if (sticky) { sticky.style.top = h + 'px'; sticky.style.height = 'calc(100svh - ' + h + 'px)'; }
+      document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight - h) + 'px');
       resize();
     });
     this._observer.observe(document.getElementById('site-header'));

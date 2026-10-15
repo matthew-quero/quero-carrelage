@@ -17,16 +17,18 @@ Puis ouvrir http://localhost:8000.
 ## Ce qui a changé
 
 - Suppression du moteur et des balises propriétaires Claude Design.
-- Conservation du carré d’ouverture, de la grille, du passage au noir, du sol qui bascule et de la pièce 3D. Les textes sont sur un calque indépendant, avec un temps de lecture stable.
+- Conservation du carré d’ouverture, de la grille, du passage au noir, du sol qui bascule et de la pièce 3D. Les textes sont projetés à différentes profondeurs sur un calque indépendant : ils grossissent en même temps que la caméra avance et se chevauchent.
 - Séquence raccourcie de 40 % sur ordinateur, plans noirs mieux différenciés, premier écran allégé et prestations consultables dans une section fixe.
 - Une seule mise à jour par image lors du défilement ; aucune boucle d'animation permanente au repos.
 - Recalcul de la géométrie au redimensionnement et au chargement des polices.
-- Contact toujours accessible, sans attendre la fin de l'animation. Les liens « Demander un devis » et « Passer l'animation » y vont directement.
+- Contact toujours accessible, sans attendre la fin de l'animation. Les liens « Demander un devis » et « Savoir-faire » permettent un accès direct.
 - Mise en page mobile, focus clavier, lien d'évitement, préférence de mouvement réduit et version statique sans JavaScript.
-- Retrait des photos Unsplash de démonstration. Les neuf surfaces restent neutres, prêtes pour vos textures.
+- Neuf photos de référence de la maquette rétablies et hébergées localement dans la mosaïque ; elles ne représentent pas des réalisations de Pascal. Les carreaux de la pièce 3D restent noirs.
 - Polices Barlow et Chakra Petch fournies localement ; pas d'appel à Google Fonts.
 - Formulaire utilisable par brouillon d'e-mail tant que le véritable formulaire Arazo n'est pas configuré. Aucune fausse confirmation, aucune donnée stockée par ce site.
-- Points de branchement du widget/formulaire Arazo et des avis réels.
+- Points de branchement du widget/formulaire Arazo et des avis réels dans la colonne de droite du contact.
+- Retrait de la bande entre accueil et mosaïque, des surtitres et des numéros. Prestations avec survol et liens vers le devis.
+- Fin de scène superposée avec la vraie section des prestations pour éviter le viewport noir vide.
 - Pages légales conservées et liens réparés. Les informations de l'export n'ont pas été vérifiées auprès de l'entreprise.
 
 ## Configuration
@@ -59,7 +61,6 @@ Le site est livré en **mode test non indexable** (`noindex,nofollow` dans les p
 - Le vrai script ou lien public Arazo pour le compte Quéro Carrelage.
 - Le flux d'avis ou le vrai widget d'avis, s'il existe côté Arazo. Aucun avis n'a été inventé.
 - Les images réelles des carreaux / chantiers et la vidéo si le mode vidéo est retenu.
-- L’activation de GitHub Pages dans les réglages du dépôt.
 - Les éléments encore indiqués « à compléter » dans les pages légales d'origine.
 
 ## Vérification

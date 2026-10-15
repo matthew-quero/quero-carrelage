@@ -29,7 +29,7 @@ Le widget et la page Arazo sont responsables de la validation, de l'antispam et 
 
 ## Avis
 
-En l'absence de données réelles, la section est masquée. Le site comprend un adaptateur pour un **flux JSON public que vous contrôlez**, à renseigner dans `arazo.reviews.feedUrl`. Ceci est un format de raccordement proposé pour le site, pas une API Arazo existante présumée.
+Les avis sont placés dans la colonne de droite du contact, sous les coordonnées. En l'absence de données réelles, la section est masquée. Le site comprend un adaptateur pour un **flux JSON public que vous contrôlez**, à renseigner dans `arazo.reviews.feedUrl`. Ceci est un format de raccordement proposé pour le site, pas une API Arazo existante présumée.
 
 Format accepté : un tableau, ou un objet `{ "reviews": [...] }`. Chaque avis contient :
 
