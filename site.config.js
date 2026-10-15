@@ -20,7 +20,7 @@ window.QUERO_CONFIG = {
       './assets/photos/service-faience.jpg'
     ]
   },
-  contact: { email: 'querocarrelage@orange.fr' },
+  // Contact details are reconstructed in assets/contact.js.
   arazo: {
     form: {
       // Copier l'URL publique exacte fournie par Arazo. Aucun endpoint n'est présumé.

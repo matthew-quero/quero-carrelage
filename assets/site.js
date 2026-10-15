@@ -38,7 +38,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener(
 });
 const form = $('#quote-form');
 const status = $('#form-status');
-const email = config.contact?.email || 'querocarrelage@orange.fr';
+const email = window.QUERO_CONTACT.email;
 form.addEventListener('submit', event => {
   event.preventDefault();
   if (!form.reportValidity()) return;
