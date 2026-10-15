@@ -122,3 +122,6 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 .tile-photo-arrow{position:absolute;right:16px;bottom:14px;font-family:var(--font-body);font-size:28px;color:white;opacity:0}
 .tile-photo:hover .tile-photo-arrow,.tile-photo:focus-visible .tile-photo-arrow{opacity:1}
 @media(prefers-reduced-motion:reduce){.tile-photo .tile-texture,.tile-caption>span{transition:none}}
+/* All three mosaic rows fit the actual sticky area, including the header and two joints. */
+.has-motion [data-grid]{grid-template-rows:repeat(3,calc((100svh - var(--header-height) - 16px)/3))!important;grid-auto-columns:calc((100svh - var(--header-height) - 16px)/3)!important}
+.has-motion [data-cell]{width:calc((100svh - var(--header-height) - 16px)/3)!important;height:calc((100svh - var(--header-height) - 16px)/3)!important}

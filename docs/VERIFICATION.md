@@ -52,3 +52,5 @@ La revue visuelle réelle porte sur l’ordinateur. Les essais sur appareil mobi
 - Section de prestations opaque pendant le raccord pour éviter la double exposition grise.
 - Tuiles utiles et liste fixe liées à trois pages réelles. Les tuiles ne sont interactives que lorsqu’elles sont entièrement dans le viewport pendant la phase horizontale.
 - Contenus et groupes de recherches décrits dans SEO-PAGES.md. Indexation du prototype toujours désactivée.
+
+- Contrôle dans Chrome : le contour du hero est absent ; la tuile « Faïence murale » ouvre la page attendue, dont le rendu est lisible. Le contrôle a repéré dix pixels de dépassement vertical de la grille dû à l’ancienne hauteur de header codée en dur : le calcul des trois rangées utilise désormais la hauteur réelle.
