@@ -130,4 +130,4 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 #contact .contact-action[href]{font-family:var(--font-body)!important;font-style:normal!important;font-weight:500!important;font-size:22px!important;line-height:1.4!important;letter-spacing:0!important}
 
 /* Full-face mineral material: no magnified crop from a white product photo. */
-[data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:url('./photos/carreau-anthracite-hd.webp');background-size:cover;background-position:center}
+[data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:cover;background-position:center}
