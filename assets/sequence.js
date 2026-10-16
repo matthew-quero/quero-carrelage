@@ -72,7 +72,7 @@ class TileSequence {
     };
     chooseSlot();
     // Fixed world positions, reused in both scroll directions.
-    const infoPositions = [[.19,-.14],[-.21,.15],[.16,.18],[-.17,-.12]];
+    const infoPositions = [[.19,-.14],[-.19,.15],[.17,.18],[-.17,-.12]];
 
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
@@ -93,7 +93,7 @@ class TileSequence {
       const vw = window.innerWidth, vh = window.innerHeight;
       const ch = sticky?.clientHeight || vh;
       const span = stage.offsetHeight - ch;
-      const y = window.scrollY;
+      const y = Math.max(0, window.scrollY);
       const stageStart = stage.getBoundingClientRect().top + y;
       const p = clamp01((y - stageStart) / (span || 1));
       // The final viewport is shared with the real services section, never an empty screen.
@@ -109,6 +109,7 @@ class TileSequence {
       const b = clamp01((y / (stageStart || 1) - 0.55) / 0.45);
       const c = clamp01(p / 0.32);
       const dark = clamp01((p - 0.32) / 0.08);
+      if (grid) grid.style.setProperty('--floor-material', String(ease(dark)));
       const fold = clamp01((p - 0.40) / 0.09);
       const cam = clamp01((p - 0.59) / 0.29);
       const shade = Math.round(255 * (1 - ease(dark) + ease(dark) * handoff));
@@ -143,7 +144,7 @@ class TileSequence {
           const g = grid.getBoundingClientRect();
           const sr = slot ? slot.getBoundingClientRect() : g;
           const ch0 = sticky ? sticky.clientHeight : vh;
-          const baseX = -g.left;
+          const baseX = vw / 2 - (sr.left + sr.width / 2);
           this._m = { vw: vw, vh: vh, ch: ch0, H: g.height, gLeft: g.left, baseX: baseX, travel: Math.max(0, g.right + baseX - vw) };
           grid.style.transform = prev;
           if (flat) flat.style.transform = previousFlat;
@@ -159,7 +160,7 @@ class TileSequence {
       const h = heroTile();
       let r = h;
       if (target) {
-        const t2 = { w: target.width, h: target.height, x: target.left, y: target.top };
+        const t2 = { w: cellW, h: cellW, x: (vw - cellW) / 2, y: vh - ch + (ch - cellW) / 2 };
         r = {
           w: h.w + (t2.w - h.w) * posT,
           h: h.h + (t2.h - h.h) * posT,
@@ -178,7 +179,7 @@ class TileSequence {
           const sx = (M.gLeft + gx + col * step) / (vw || 1);
           const w = clamp01(sx * 0.8 + (row / (rows - 1)) * 0.2);
           const local = clamp01((dark - w * 0.5) / 0.5);
-          el.style.filter = local > 0 ? 'brightness(' + (1 - local * .78).toFixed(3) + ')' : 'none';
+          el.style.filter = local > 0 ? 'brightness(' + (1 - local * .22).toFixed(3) + ')' : 'none';
         });
         const gj = Math.round(255 + (72 - 255) * ease(dark));
         if (grid) grid.style.backgroundColor = 'rgb(' + gj + ',' + gj + ',' + gj + ')';
@@ -203,7 +204,7 @@ class TileSequence {
         if (!el) return;
         const oy = h - full - GAP;
         el.style.height = h + 'px';
-        el.style.backgroundPosition = px + 'px ' + oy + 'px,' + px + 'px ' + oy + 'px';
+        el.style.backgroundPosition = px + 'px ' + oy + 'px,' + px + 'px ' + oy + 'px,' + px + 'px ' + oy + 'px';
       };
       setH(wl, M.ch * eL, M.ch, -GAP);
       setH(back, M.ch * eB, M.ch, pxB);
@@ -211,7 +212,7 @@ class TileSequence {
       if (cl) {
         const hc = D * eC, oy = hc - D;
         cl.style.height = hc + 'px';
-        cl.style.backgroundPosition = pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px';
+        cl.style.backgroundPosition = pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px';
       }
 
       // Project text mathematically into a separate 2D overlay. Walls cannot hide it.
@@ -266,7 +267,7 @@ class TileSequence {
     const applyBar = () => {
       if (!bar) return;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      const y = window.scrollY;
+      const y = Math.max(0, window.scrollY);
       bar.style.width = (max - y <= 4 ? 100 : clamp01(y / (max || 1)) * 100) + '%';
     };
 

@@ -131,3 +131,13 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 
 /* Full-face mineral material: no magnified crop from a white product photo. */
 [data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:cover;background-position:center}
+
+/* Prevent native scroll chaining/bounce beyond the document edges. */
+html,body{overscroll-behavior-y:none}
+/* A single, unbroken word group on both sides of the camera. */
+[data-info]{width:max-content!important;max-width:none!important;white-space:nowrap;text-wrap:nowrap;font-size:clamp(30px,4.2vw,66px);text-align:center}
+@media(max-width:760px){[data-info]{font-size:clamp(22px,6vw,38px)!important}}
+/* Empty material tiles throughout the mosaic, then a full tiled floor. */
+[data-cell]:empty{background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:cover;background-position:center}
+[data-cell]{position:relative}
+[data-cell]::after{content:"";position:absolute;inset:0;background:#303030 url('./photos/carreau-anthracite-hd.webp') center/cover;opacity:var(--floor-material,0);pointer-events:none;z-index:3}
