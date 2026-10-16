@@ -168,8 +168,9 @@ class TileSequence {
           y: h.y + (t2.y - h.y) * posT
         };
       }
-      if (slot) slot.style.opacity = a >= 1 ? '1' : '0';
-      setTile(r, rot, a >= 1 ? 0 : 1);
+      const docked = y >= stageStart - (vh - ch);
+      if (slot) slot.style.opacity = docked ? '1' : '0';
+      setTile(r, rot, docked ? 0 : 1);
 
       /* temps 1 : la mosaïque passe au noir, par vagues */
       if (this._dk !== dark) {
