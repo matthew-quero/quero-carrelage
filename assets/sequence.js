@@ -79,8 +79,10 @@ class TileSequence {
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
       const mobile = vw <= 900;
-      const sd = mobile ? Math.min(vw * .75, 380) : Math.min(vh * .82, vw * .58);
-      return { w: sd, h: sd, x: mobile ? -sd * .35 : -sd / 2, y: mobile ? Math.max(vh * .72 - sd / 2, 440) : (vh - sd) / 2 };
+      const sd = mobile ? Math.min(vw * .62, vh * .3, 300) : Math.min(vh * .82, vw * .58);
+      const textRect = heroText?.getBoundingClientRect();
+      const textBottom = textRect ? textRect.top + textRect.height + Math.max(0,window.scrollY) + 80 * clamp01(Math.max(0,window.scrollY)/(vh*.8)) : vh*.45;
+      return { w: sd, h: sd, x: mobile ? -sd * .35 : -sd / 2, y: mobile ? textBottom + 20 + sd * (Math.SQRT2-1)/2 : (vh - sd) / 2 };
     };
     const setTile = (r, rot, op) => {
       if (!tile) return;
