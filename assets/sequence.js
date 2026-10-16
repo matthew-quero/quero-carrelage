@@ -15,6 +15,7 @@ class TileSequence {
     const flat = q('[data-flat]');
     const room = q('[data-room]');
     const roomInner = q('[data-room-inner]');
+    const portraitRoom = window.QueroPortraitRoom && scene ? new window.QueroPortraitRoom(scene) : null;
     const infos = Array.from(document.querySelectorAll('[data-info]'));
     const tileLinks = Array.from(document.querySelectorAll('.tile-link'));
     const captions = Array.from(document.querySelectorAll('.tile-caption'));
@@ -239,6 +240,15 @@ class TileSequence {
         roomInner.style.top='0';roomInner.style.bottom='0';roomInner.style.height='auto';
         if (flat) flat.style.opacity='1';
         if (cl) {cl.style.top='auto';cl.style.bottom='100%';cl.style.transformOrigin='50% 100%';cl.style.transform='rotateX(-90deg)';}
+      }
+
+      if (portraitRoom) {
+        portraitRoom.canvas.hidden = vw > 900;
+        if (vw <= 900) {
+          portraitRoom.draw(vw,ch,p,cam);
+          if (room) room.style.opacity='0';
+          if (flat) flat.style.opacity=String(1-ease(clamp01((p-.4)/.055)));
+        } else if (room) room.style.opacity='1';
       }
 
       // Project text mathematically into a separate 2D overlay. Walls cannot hide it.
