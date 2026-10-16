@@ -79,8 +79,8 @@ class TileSequence {
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
       const mobile = vw <= 900;
-      const sd = mobile ? Math.min(vw * .58, 300) : Math.min(vh * .82, vw * .58);
-      return { w: sd, h: sd, x: mobile ? vw * .64 - sd / 2 : -sd / 2, y: mobile ? Math.max(vh * .72 - sd / 2, 455) : (vh - sd) / 2 };
+      const sd = mobile ? Math.min(vw * .75, 380) : Math.min(vh * .82, vw * .58);
+      return { w: sd, h: sd, x: mobile ? -sd * .35 : -sd / 2, y: mobile ? Math.max(vh * .72 - sd / 2, 440) : (vh - sd) / 2 };
     };
     const setTile = (r, rot, op) => {
       if (!tile) return;

@@ -64,3 +64,14 @@
 @media(max-width:900px){
  [data-room-inner]::after{content:"";position:absolute;left:0;top:100%;width:100%;height:var(--room-depth);transform-origin:50% 0%;transform:translateZ(var(--room-half-depth)) rotateX(90deg);background-image:repeating-linear-gradient(0deg,#484848 0 4px,transparent 4px var(--room-step)),repeating-linear-gradient(90deg,#484848 0 4px,transparent 4px var(--room-step)),url('./photos/carreau-anthracite-hd.webp');background-size:auto,auto,var(--room-step) var(--room-step);opacity:var(--room-floor-opacity,0);backface-visibility:visible}
 }
+.hero-location span+span::before{content:' · '}
+.place-name{white-space:nowrap}
+@media(max-width:900px){
+ html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+ #haut .hero-location{font-size:12px!important;line-height:1.5!important;letter-spacing:.025em!important;margin-bottom:24px!important;text-transform:none!important}
+ #haut .hero-location span{display:block}#haut .hero-location span:first-child{font-weight:600}#haut .hero-location span+span{color:#777}#haut .hero-location span+span::before{content:none}
+ #haut h1{font-size:clamp(40px,11.8vw,64px)!important;line-height:1.02!important}
+ #haut .hero-intro{font-size:16px!important;line-height:1.55!important;margin-top:24px!important;max-width:34ch!important}
+ #haut .hero-copy>div{margin-top:24px!important}
+}
+@media(max-width:350px){#haut h1{font-size:36px!important}#haut .hero-location{font-size:11px!important}}
