@@ -49,7 +49,7 @@ class TileSequence {
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
       if (back) { back.style.height = '0px'; back.style.transform = 'translateZ(-' + D + 'px)'; }
       if (cl) { cl.style.height = '0px'; cl.style.transform = 'rotateX(-90deg)'; }
-      if (roomInner) { const width = vw <= 900 ? Math.max(vw * 1.85, ch * 1.12) : vw; roomInner.style.width = width + 'px'; roomInner.style.left = (vw - width) / 2 + 'px'; }
+      if (roomInner) { const width = vw <= 900 ? Math.max(vw * 1.35, ch * .72) : vw; roomInner.style.width = width + 'px'; roomInner.style.left = (vw - width) / 2 + 'px'; }
 
 
     };
@@ -147,7 +147,7 @@ class TileSequence {
           const sr = slot ? slot.getBoundingClientRect() : g;
           const ch0 = sticky ? sticky.clientHeight : vh;
           const baseX = vw / 2 - (sr.left + sr.width / 2);
-          this._m = { vw: vw, vh: vh, ch: ch0, H: g.height, gLeft: g.left, baseX: baseX, travel: Math.max(0, g.right + baseX - vw) };
+          this._m = { vw: vw, vh: vh, ch: ch0, H: g.height, W: g.width, gLeft: g.left, baseX: baseX, travel: Math.max(0, g.right + baseX - vw) };
           grid.style.transform = prev;
           if (flat) flat.style.transform = previousFlat;
           if (flat) flat.style.transformOrigin = '50% ' + ch0 + 'px';
@@ -155,7 +155,9 @@ class TileSequence {
         }
       }
       const M = this._m || { ch: vh, H: 0, gLeft: 0, baseX: 0, travel: 0 };
-      const gx = M.baseX - M.travel * ease(c);
+      const panX = M.baseX - M.travel * ease(c);
+      const floorX = -M.gLeft + (vw - (M.W || vw)) / 2;
+      const gx = vw <= 900 ? panX + (floorX - panX) * ease(fold) : panX;
       if (grid) grid.style.transform = 'translateX(' + gx + 'px)';
 
       const target = slot ? slot.getBoundingClientRect() : null;
@@ -192,16 +194,16 @@ class TileSequence {
       /* temps 2 et 3 : bascule du sol puis levée des plans depuis ses arêtes */
       const eF = ease(fold);
       const P0 = vw <= 900 ? Math.max(900, vw * 1.8) : vw * 1.15;
-      const Send = vw <= 900 ? 1.35 : Math.max(1.5, 0.8 * vh / (cellW || 1));
+      const Send = vw <= 900 ? .85 : Math.max(1.5, 0.8 * vh / (cellW || 1));
       // A linear camera advance gives the walls and words the same acceleration in perspective.
       const roomZ = cam * (D + P0 - P0 / Send);
 
       if (flat) flat.style.transform = 'translateZ(' + roomZ + 'px) rotateX(' + (90 * eF) + 'deg)';
       if (roomInner) roomInner.style.transform = 'translateZ(' + roomZ + 'px)';
 
-      const eW = ease(clamp01((p - 0.49) / 0.06));
+      const eW = ease(clamp01((p - (vw <= 900 ? .425 : .49)) / .06));
       const eL = eW, eB = eW;
-      const eC = ease(clamp01((p - 0.55) / 0.06));
+      const eC = ease(clamp01((p - (vw <= 900 ? .485 : .55)) / .06));
       const pxB = mod(vw / 2 - (GAP + step) / 2, step) - step;
       const setH = (el, h, full, px) => {
         if (!el) return;
