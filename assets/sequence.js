@@ -28,7 +28,7 @@ class TileSequence {
 
     const desktopLength = Math.max(360, Number(this.props.sequenceLength) || 600);
     const mobileLength = Math.max(360, Number(this.props.mobileLength) || 520);
-    const setLength = () => { if (stage) stage.style.height = (window.innerWidth <= 760 ? mobileLength : desktopLength) + 'svh'; };
+    const setLength = () => { if (stage) stage.style.height = (window.innerWidth <= 900 ? mobileLength : desktopLength) + 'svh'; };
     setLength();
 
     const back = q('[data-plane="back"]');
@@ -42,7 +42,7 @@ class TileSequence {
       cellW = Math.max(40, Math.round(cw));
       step = cellW + GAP;
       D = Math.round((ch + 3 * step - GAP) / 2);
-      if (scene) scene.style.perspective = Math.round(vw * 1.15) + 'px';
+      if (scene) scene.style.perspective = Math.round(vw <= 900 ? Math.max(900, vw * 1.8) : vw * 1.15) + 'px';
       const img = 'repeating-linear-gradient(180deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px),repeating-linear-gradient(90deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px)';
       [back, wl, wr, cl].forEach(el => { if (el) { el.style.backgroundImage = img + ',url("./assets/photos/carreau-anthracite-hd.webp")'; el.style.backgroundSize = 'auto,auto,' + step + 'px ' + step + 'px'; } });
       if (wl) { wl.style.width = D + 'px'; wl.style.height = '0px'; wl.style.transform = 'rotateY(90deg)'; }
@@ -76,9 +76,9 @@ class TileSequence {
 
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
-      const mobile = vw <= 760;
-      const sd = mobile ? Math.min(vw * 0.38, vh * 0.3) : Math.min(vh * .82, vw * .58);
-      return { w: sd, h: sd, x: mobile ? -sd * .85 : -sd / 2, y: (vh - sd) / 2 };
+      const mobile = vw <= 900;
+      const sd = mobile ? Math.min(vw * .58, 300) : Math.min(vh * .82, vw * .58);
+      return { w: sd, h: sd, x: mobile ? vw * .64 - sd / 2 : -sd / 2, y: mobile ? Math.max(vh * .72 - sd / 2, 455) : (vh - sd) / 2 };
     };
     const setTile = (r, rot, op) => {
       if (!tile) return;
@@ -189,8 +189,8 @@ class TileSequence {
 
       /* temps 2 et 3 : bascule du sol puis levée des plans depuis ses arêtes */
       const eF = ease(fold);
-      const P0 = vw * 1.15;
-      const Send = Math.max(1.5, 0.8 * vh / (cellW || 1));
+      const P0 = vw <= 900 ? Math.max(900, vw * 1.8) : vw * 1.15;
+      const Send = vw <= 900 ? 1.35 : Math.max(1.5, 0.8 * vh / (cellW || 1));
       // A linear camera advance gives the walls and words the same acceleration in perspective.
       const roomZ = cam * (D + P0 - P0 / Send);
 
@@ -227,7 +227,7 @@ class TileSequence {
         const near = 1 - ease(clamp01((-depth - .30) / .68));
         const start = ease(clamp01((p - .56) / .04));
         const [x,y0] = infoPositions[index % infoPositions.length];
-        const spread = vw <= 760 ? .74 : 1;
+        const spread = vw <= 900 ? .42 : 1;
         el.style.left = (50 + x * 100 * scale * spread).toFixed(3) + '%';
         el.style.top = (48 + y0 * 100 * scale).toFixed(3) + '%';
         el.style.transform = 'translate(-50%, -50%) scale(' + scale.toFixed(4) + ')';
@@ -278,7 +278,7 @@ class TileSequence {
       applyStage();
       applyBar();
       const mobileBar = document.getElementById('mobile-call');
-      if (mobileBar) mobileBar.hidden = window.innerWidth > 760 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
+      if (mobileBar) mobileBar.hidden = window.innerWidth > 900 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
     };
     const schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(render); };
     const resize = () => { setLength(); chooseSlot(); document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight) + 'px'); this._m = null; this._dk = null; textSizes = []; schedule(); };
