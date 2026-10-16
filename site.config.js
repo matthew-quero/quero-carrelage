@@ -2,7 +2,7 @@
 window.QUERO_CONFIG = {
   animation: {
     lengthVh: 600,
-    mobileLengthVh: 400,
+    mobileLengthVh: 350,
     // Laisser vide pour conserver la séquence de carreaux en CSS 3D.
     // Exemple de chemin local après ajout de votre vidéo : './assets/pose.mp4'.
     videoUrl: '',

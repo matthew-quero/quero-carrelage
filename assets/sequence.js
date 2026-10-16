@@ -49,6 +49,7 @@ class TileSequence {
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
       if (back) { back.style.height = '0px'; back.style.transform = 'translateZ(-' + D + 'px)'; }
       if (cl) { cl.style.height = '0px'; cl.style.transform = 'rotateX(-90deg)'; }
+      if (roomInner) { const width = vw <= 900 ? Math.max(vw * 1.85, ch * 1.12) : vw; roomInner.style.width = width + 'px'; roomInner.style.left = (vw - width) / 2 + 'px'; }
 
 
     };
@@ -105,7 +106,8 @@ class TileSequence {
       if (copy) copy.style.visibility = y >= stageStart && handoff < 1 ? 'visible' : 'hidden';
       if (window.QueroVideo?.active) { window.QueroVideo.seek(p); return; }
 
-      const a = clamp01(y / (stageStart * 0.55 || 1));
+      const arrival = vw <= 900 ? .86 : .55;
+      const a = clamp01(y / (stageStart * arrival || 1));
       const b = clamp01((y / (stageStart || 1) - 0.55) / 0.45);
       const c = clamp01(p / 0.32);
       const dark = clamp01((p - 0.32) / 0.08);
@@ -222,12 +224,12 @@ class TileSequence {
       infos.forEach((el, index) => {
         const depth = 1.5 + index * 1.15 - camera;
         const visible = p >= .56 && depth < 2.2 && depth > -.98;
-        const scale = 1.1 / Math.max(.12, 1.1 + depth);
+        const scale = vw <= 900 ? .85 + .4 * clamp01((2.2-depth)/2.5) : 1.1 / Math.max(.12, 1.1 + depth);
         const far = ease(clamp01((2.2 - depth) / 1.1));
         const near = 1 - ease(clamp01((-depth - .30) / .68));
         const start = ease(clamp01((p - .56) / .04));
         const [x,y0] = infoPositions[index % infoPositions.length];
-        const spread = vw <= 900 ? .42 : 1;
+        const spread = vw <= 900 ? .15 : 1;
         el.style.left = (50 + x * 100 * scale * spread).toFixed(3) + '%';
         el.style.top = (48 + y0 * 100 * scale).toFixed(3) + '%';
         el.style.transform = 'translate(-50%, -50%) scale(' + scale.toFixed(4) + ')';
@@ -278,7 +280,7 @@ class TileSequence {
       applyStage();
       applyBar();
       const mobileBar = document.getElementById('mobile-call');
-      if (mobileBar) mobileBar.hidden = window.innerWidth > 900 || window.scrollY < window.innerHeight * .7 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
+      if (mobileBar) mobileBar.hidden = window.innerWidth > 900 || (services?.getBoundingClientRect().top ?? Infinity) > window.innerHeight * .8 || document.getElementById('contact').getBoundingClientRect().top < window.innerHeight;
     };
     const schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(render); };
     const resize = () => { setLength(); chooseSlot(); document.documentElement.style.setProperty('--sequence-overlap', (sticky?.clientHeight || window.innerHeight) + 'px'); this._m = null; this._dk = null; textSizes = []; schedule(); };
