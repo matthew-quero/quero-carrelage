@@ -61,3 +61,6 @@
  [data-info]{font-size:clamp(26px,7.2vw,36px)!important;text-shadow:0 1px 12px #0008}
 }
 @media(max-width:900px){[data-plane]{backface-visibility:visible!important}}
+@media(max-width:900px){
+ [data-room-inner]::after{content:"";position:absolute;left:0;top:100%;width:100%;height:var(--room-depth);transform-origin:50% 0%;transform:translateZ(var(--room-half-depth)) rotateX(90deg);background-image:repeating-linear-gradient(0deg,#484848 0 4px,transparent 4px var(--room-step)),repeating-linear-gradient(90deg,#484848 0 4px,transparent 4px var(--room-step)),url('./photos/carreau-anthracite-hd.webp');background-size:auto,auto,var(--room-step) var(--room-step);opacity:var(--room-floor-opacity,0);backface-visibility:visible}
+}

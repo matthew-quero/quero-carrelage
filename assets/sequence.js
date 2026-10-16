@@ -220,6 +220,27 @@ class TileSequence {
         cl.style.backgroundPosition = pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px,' + pxB + 'px ' + oy + 'px';
       }
 
+      // Portrait uses one coherent room box, rather than stretching desktop planes.
+      if (vw <= 900 && roomInner) {
+        const rw = vw * .96, rh = ch * .68, rd = vw * .9;
+        roomInner.style.width = rw + 'px'; roomInner.style.height = rh + 'px';
+        roomInner.style.left = (vw-rw)/2 + 'px'; roomInner.style.top = (ch-rh)/2 + 'px'; roomInner.style.bottom = 'auto';
+        roomInner.style.transform = 'translateZ(' + cam * rd * .25 + 'px)';
+        roomInner.style.setProperty('--room-depth',rd+'px');
+        roomInner.style.setProperty('--room-half-depth',(-rd/2)+'px');
+        roomInner.style.setProperty('--room-step',step+'px');
+        roomInner.style.setProperty('--room-floor-opacity',String(ease(clamp01((p-.46)/.04))));
+        if (back) { back.style.top='auto'; back.style.bottom='0'; back.style.width='100%'; back.style.height=rh*eW+'px'; back.style.transform='translateZ('+(-rd/2)+'px)'; }
+        if (wl) { wl.style.top='auto'; wl.style.bottom='0'; wl.style.left='0'; wl.style.width=rd+'px'; wl.style.height=rh*eW+'px'; wl.style.transformOrigin='0% 100%'; wl.style.transform='translateZ('+(rd/2)+'px) rotateY(90deg)'; }
+        if (wr) { wr.style.top='auto'; wr.style.bottom='0'; wr.style.right='0'; wr.style.width=rd+'px'; wr.style.height=rh*eW+'px'; wr.style.transformOrigin='100% 100%'; wr.style.transform='translateZ('+(rd/2)+'px) rotateY(-90deg)'; }
+        if (cl) { cl.style.top='0'; cl.style.bottom='auto'; cl.style.height=rd*eC+'px'; cl.style.transformOrigin='50% 0%'; cl.style.transform='rotateX(90deg)'; }
+        if (flat) flat.style.opacity=String(1-ease(clamp01((p-.46)/.04)));
+      } else if (roomInner) {
+        roomInner.style.top='0';roomInner.style.bottom='0';roomInner.style.height='auto';
+        if (flat) flat.style.opacity='1';
+        if (cl) {cl.style.top='auto';cl.style.bottom='100%';cl.style.transformOrigin='50% 100%';cl.style.transform='rotateX(-90deg)';}
+      }
+
       // Project text mathematically into a separate 2D overlay. Walls cannot hide it.
       // Consecutive depth planes overlap; near words grow past the viewer and disappear.
       const camera = cam * 5.4;
