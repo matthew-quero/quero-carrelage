@@ -33,9 +33,9 @@ class PortraitRoom {
   // The first canvas frame is the same grid at the same coordinates. Each
   // square keeps its size, joint and texture while its plane folds backwards.
   const floorPoint=(x,y)=>{const dy=y-pivot;return{x,y:pivot+dy*Math.cos(angle),z:-dy*Math.sin(angle)}};
-  for(let col=-3;col<grid.columns+4;col++)for(let row=-3;row<12;row++){
-   const x=xStart+col*pitch,y=grid.top+row*pitch-h*.48;
-   add([floorPoint(x,y),floorPoint(x+size,y),floorPoint(x+size,y+size),floorPoint(x,y+size)],.22-.14*fold);
+  for(let col=-3;col<grid.columns+4;col++)for(let row=0;row<12;row++){
+   const x=Math.max(left,xStart+col*pitch),x2=Math.min(right,xStart+col*pitch+size),y=grid.top+row*pitch-h*.48;
+   if(x2>x)add([floorPoint(x,y),floorPoint(x2,y),floorPoint(x2,y+size),floorPoint(x,y+size)],.22-.14*fold);
   }
   const plane=(point,umin,umax,vmin,vmax,shade)=>{
    for(let u=umin;u<umax;u+=pitch)for(let v=vmin;v<vmax;v+=pitch){

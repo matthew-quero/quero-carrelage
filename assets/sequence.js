@@ -265,13 +265,14 @@ class TileSequence {
       const camera = cam * 6.2;
       infos.forEach((el, index) => {
         const depth = 1.5 + index * 1.15 - camera;
-        const visible = p >= .52 && depth < 2.2 && depth > -.98;
+        const visible = p >= .52 && depth < (vw<=900?1.75:2.2) && depth > (vw<=900?-.45:-.98);
         const fit=Math.min(1,(vw-112)/1.12/Math.max(1,textSizes[index]?.width || 500));
         const scale = vw <= 900 ? fit*(.82 + .3 * clamp01((2.2-depth)/2.5)) : 1.1 / Math.max(.12, 1.1 + depth);
-        const far = ease(clamp01((2.2 - depth) / 1.1));
-        const near = 1 - ease(clamp01((-depth - .30) / .68));
+        const far = ease(clamp01(((vw<=900?1.75:2.2) - depth) / (vw<=900?.8:1.1)));
+        const near = 1 - ease(clamp01((-depth - (vw<=900?.05:.30)) / (vw<=900?.4:.68)));
         const start = ease(clamp01((p - .52) / .025));
-        const [x,y0] = infoPositions[index % infoPositions.length];
+        const [x,desktopY] = infoPositions[index % infoPositions.length];
+        const y0=vw<=900?(index%2?.21:-.23):desktopY;
         const spread = vw <= 900 ? .10 : 1;
         const wordWidth=(textSizes[index]?.width || 500)*scale;
         const offset=Math.sign(x)*Math.min(Math.abs(vw*x*scale*spread),Math.max(0,(vw-wordWidth)/2-64));
