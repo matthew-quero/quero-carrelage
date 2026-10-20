@@ -29,7 +29,13 @@ class TileSequence {
 
     const desktopLength = Math.max(360, Number(this.props.sequenceLength) || 600);
     const mobileLength = Math.max(360, Number(this.props.mobileLength) || 520);
-    const setLength = () => { if (stage) stage.style.height = (window.innerWidth <= 900 ? mobileLength : desktopLength) + 'svh'; };
+    const setLength = () => {
+      if (!stage) return;
+      const vw=window.innerWidth, vh=window.innerHeight, ch=sticky?.clientHeight || vh;
+      const gridWidth=grid?.getBoundingClientRect().width || vw;
+      // Give every card enough scroll distance, followed by a separate room passage.
+      stage.style.height=Math.max((vw<=900?mobileLength:desktopLength)*vh/100,ch+Math.max(vw,gridWidth-vw)+vh*4.5)+'px';
+    };
     setLength();
 
     const back = q('[data-plane="back"]');
@@ -79,10 +85,10 @@ class TileSequence {
     const heroTile = () => {
       const vw = window.innerWidth, vh = window.innerHeight;
       const mobile = vw <= 900;
-      const sd = mobile ? Math.min(vw * .62, vh * .3, 300) : Math.min(vh * .82, vw * .58);
-      const textRect = heroText?.getBoundingClientRect();
-      const textBottom = textRect ? textRect.top + textRect.height + Math.max(0,window.scrollY) + 80 * clamp01(Math.max(0,window.scrollY)/(vh*.8)) : vh*.45;
-      return { w: sd, h: sd, x: mobile ? -sd * .35 : -sd / 2, y: mobile ? textBottom + 20 + sd * (Math.SQRT2-1)/2 : (vh - sd) / 2 };
+      const sd = mobile ? Math.min(vw * .45, vh * .21, 190) : Math.min(vh * .82, vw * .58);
+      const gap = q('[data-hero-tile-space]')?.getBoundingClientRect();
+      const undo = Math.max(0,window.scrollY) + 80 * clamp01(Math.max(0,window.scrollY)/(vh*.8));
+      return {w:sd,h:sd,x:mobile?(vw-sd)/2:-sd/2,y:mobile&&gap?gap.top+undo+(gap.height-sd)/2:(vh-sd)/2};
     };
     const setTile = (r, rot, op) => {
       if (!tile) return;
@@ -99,24 +105,25 @@ class TileSequence {
       const span = stage.offsetHeight - ch;
       const y = Math.max(0, window.scrollY);
       const stageStart = stage.getBoundingClientRect().top + y;
-      const p = clamp01((y - stageStart) / (span || 1));
+      const elapsed=Math.max(0,y-stageStart);
+      const roomSpan=Math.min(span*.8,vh*4.5), panSpan=Math.max(1,span-roomSpan);
+      const p=clamp01(elapsed<=panSpan?elapsed/panSpan*.32:.32+(elapsed-panSpan)/roomSpan*.68);
       // The final viewport is shared with the real services section, never an empty screen.
-      const handoffStart = Math.max(.5, 1 - ch / (span || 1));
-      const handoff = ease(clamp01((p - handoffStart) / (1 - handoffStart)));
+      const handoff = ease(clamp01((elapsed-(span-ch))/(ch || 1)));
       if (services) services.style.opacity = '1';
       if (scene) scene.style.opacity = String(1 - handoff);
       if (copy) copy.style.opacity = String(1 - handoff);
       if (copy) copy.style.visibility = y >= stageStart && handoff < 1 ? 'visible' : 'hidden';
       if (window.QueroVideo?.active) { window.QueroVideo.seek(p); return; }
 
-      const arrival = vw <= 900 ? .86 : .55;
+      const arrival = vw <= 900 ? .46 : .55;
       const a = clamp01(y / (stageStart * arrival || 1));
       const b = clamp01((y / (stageStart || 1) - 0.55) / 0.45);
       const c = clamp01(p / 0.32);
       const dark = clamp01((p - 0.32) / 0.08);
       if (grid) grid.style.setProperty('--floor-material', String(ease(dark)));
       const fold = clamp01((p - 0.40) / 0.09);
-      const cam = clamp01((p - 0.59) / 0.29);
+      const cam = clamp01((p - 0.54) / 0.26);
       const shade = Math.round(255 * (1 - ease(dark) + ease(dark) * handoff));
       const background = 'rgb(' + shade + ',' + shade + ',' + shade + ')';
       if (sticky) sticky.style.backgroundColor = background;
@@ -129,7 +136,7 @@ class TileSequence {
       }
 
       const posT = ease(a);
-      const rot = 45 * (1 - posT);
+      const rot = 45 * (1 - ease(clamp01(a*1.5)));
 
       ring.forEach(o => {
         if (o.i === idx) return;
@@ -158,9 +165,9 @@ class TileSequence {
         }
       }
       const M = this._m || { ch: vh, H: 0, gLeft: 0, baseX: 0, travel: 0 };
-      const panX = M.baseX - M.travel * ease(c);
+      const panX = M.baseX - M.travel * c;
       const floorX = -M.gLeft + (vw - (M.W || vw)) / 2;
-      const gx = vw <= 900 ? panX + (floorX - panX) * ease(fold) : panX;
+      const gx = panX;
       if (grid) grid.style.transform = 'translateX(' + gx + 'px)';
 
       const target = slot ? slot.getBoundingClientRect() : null;
@@ -247,30 +254,33 @@ class TileSequence {
       if (portraitRoom) {
         portraitRoom.canvas.hidden = vw > 900;
         if (vw <= 900) {
-          portraitRoom.draw(vw,ch,p,cam);
+          portraitRoom.draw(vw,ch,p,cam,{left:M.gLeft+gx,top:(ch-M.H)/2,size:cellW,gap:GAP,columns:Math.ceil(cells.length/rows)});
           if (room) room.style.opacity='0';
-          if (flat) flat.style.opacity=String(1-ease(clamp01((p-.4)/.055)));
+          if (flat) flat.style.opacity=p>=.4?'0':'1';
         } else if (room) room.style.opacity='1';
       }
 
       // Project text mathematically into a separate 2D overlay. Walls cannot hide it.
       // Consecutive depth planes overlap; near words grow past the viewer and disappear.
-      const camera = cam * 5.4;
+      const camera = cam * 6.2;
       infos.forEach((el, index) => {
         const depth = 1.5 + index * 1.15 - camera;
-        const visible = p >= .56 && depth < 2.2 && depth > -.98;
-        const scale = vw <= 900 ? .85 + .4 * clamp01((2.2-depth)/2.5) : 1.1 / Math.max(.12, 1.1 + depth);
+        const visible = p >= .52 && depth < 2.2 && depth > -.98;
+        const fit=Math.min(1,(vw-112)/1.12/Math.max(1,textSizes[index]?.width || 500));
+        const scale = vw <= 900 ? fit*(.82 + .3 * clamp01((2.2-depth)/2.5)) : 1.1 / Math.max(.12, 1.1 + depth);
         const far = ease(clamp01((2.2 - depth) / 1.1));
         const near = 1 - ease(clamp01((-depth - .30) / .68));
-        const start = ease(clamp01((p - .56) / .04));
+        const start = ease(clamp01((p - .52) / .025));
         const [x,y0] = infoPositions[index % infoPositions.length];
-        const spread = vw <= 900 ? .15 : 1;
-        el.style.left = (50 + x * 100 * scale * spread).toFixed(3) + '%';
+        const spread = vw <= 900 ? .10 : 1;
+        const wordWidth=(textSizes[index]?.width || 500)*scale;
+        const offset=Math.sign(x)*Math.min(Math.abs(vw*x*scale*spread),Math.max(0,(vw-wordWidth)/2-64));
+        el.style.left = (50+offset/vw*100).toFixed(3)+'%';
         el.style.top = (48 + y0 * 100 * scale).toFixed(3) + '%';
         el.style.transform = 'translate(-50%, -50%) scale(' + scale.toFixed(4) + ')';
         // Fade the entire word group before its first edge can be clipped.
         const size = textSizes[index];
-        const cx = vw * (.5 + x * scale * spread);
+        const cx = vw*.5+offset;
         const cy = M.ch * (.48 + y0 * scale);
         const halfW = (size?.width || 500) * scale / 2;
         const halfH = (size?.height || 140) * scale / 2;

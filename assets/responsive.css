@@ -75,3 +75,14 @@
  #haut .hero-copy>div{margin-top:24px!important}
 }
 @media(max-width:350px){#haut h1{font-size:36px!important}#haut .hero-location{font-size:11px!important}}
+
+/* The tile has a real place between the heading and introduction. */
+.hero-tile-space{display:none}
+@media(max-width:900px){
+ #haut{min-height:calc(100svh - var(--header-height))!important;padding-bottom:32px!important}
+ #haut .hero-tile-space{display:block;height:clamp(190px,26svh,250px);margin:20px 0!important}
+ #haut .hero-intro{margin-top:0!important}
+ .has-motion [data-grid]{grid-template-rows:repeat(3,calc((100svh - var(--header-height) - 16px)/3))!important;grid-auto-columns:calc((100svh - var(--header-height) - 16px)/3)!important}
+ .has-motion [data-cell]{width:calc((100svh - var(--header-height) - 16px)/3)!important;height:calc((100svh - var(--header-height) - 16px)/3)!important}
+ html:not(.has-motion) .hero-tile-space{display:none}
+}
