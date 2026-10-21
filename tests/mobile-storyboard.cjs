@@ -40,7 +40,11 @@ for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
  const snapshot=()=>JSON.stringify([tile.style,infos.map(x=>x.style),copy.children.at(-1).style,title.innerHTML,intro.innerHTML,grid.style]);
  const photoBlocks=grid.children.filter(x=>x.className==='mobile-photo-block');assert.equal(photoBlocks.length,6);
  const photoUrls=photoBlocks.map(x=>x.children[0].style.backgroundImage);assert.equal(new Set(photoUrls).size,6,'Every photo is unique');
- for(const x of photoBlocks){assert(x.style.gridColumn.endsWith('/span 2')&&x.style.gridRow.endsWith('/span 2'),'Each photo spans four cells')}
+ const occupied=new Set();
+ for(const x of photoBlocks){assert(x.style.gridColumn.endsWith('/span 2')&&x.style.gridRow.endsWith('/span 2'),'Each photo spans four cells');
+ const col=parseInt(x.style.gridColumn)-1,row=parseInt(x.style.gridRow)-1;assert(row>=0&&row+1<5);
+ for(let dx=0;dx<2;dx++)for(let dy=0;dy<2;dy++){const key=`${col+dx},${row+dy}`;assert(!occupied.has(key),'Large photos must never overlap');occupied.add(key)}}
+ assert(!occupied.has('1,2'),'The hero tile must have its own uncovered cell');
  const saved=new Map();let seen=infos.map(()=>0);
  for(let direction of [1,-1])for(let n=0;n<=240;n++){
   const t=direction===1?n:240-n;y=(stageStart+total)*t/240;listeners.scroll();flush();

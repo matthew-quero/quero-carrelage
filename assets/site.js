@@ -21,7 +21,8 @@ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener(
   const target = $(hash);
   if (!target) return;
   event.preventDefault();
-  target.scrollIntoView({ behavior: reduced.matches || ['#contact','#savoir-faire'].includes(hash) ? 'instant' : 'smooth', block: 'start' });
+  const scrollTarget = hash === '#haut' ? $('.hero-scroll') || target : target;
+  scrollTarget.scrollIntoView({ behavior: reduced.matches || ['#contact','#savoir-faire'].includes(hash) ? 'instant' : 'smooth', block: 'start' });
   const focus = target.querySelector('h2[tabindex]') || target;
   if (!focus.hasAttribute('tabindex')) focus.setAttribute('tabindex','-1');
   focus.focus({ preventScroll:true });

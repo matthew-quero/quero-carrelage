@@ -15,3 +15,7 @@ Photos présentes dans la maquette Claude Design fournie. Elles illustrent l’a
 ## Illustrations de services — 15 octobre 2026
 
 service-interieur.jpg, service-faience.jpg et service-terrasse.jpg : images générées pour illustrer les prestations, sans représenter des chantiers réellement exécutés par Pascal. PNG originaux conservés ; JPEG optimisés pour le site. Les pages les identifient comme images d’illustration.
+
+## Mosaïque mobile — 22 octobre 2026
+
+Six photos distinctes, chacune sur un bloc carré de quatre cases : service-interieur.jpg (sol intérieur), reference-01.jpg (faïence), service-faience.jpg (douche), service-terrasse.jpg (terrasse), reference-02.jpg (rénovation), reference-03.jpg (mosaïque / damier). Ce sont toujours des illustrations, sans attribution à des chantiers de Pascal. Le matériau de toutes les cases utilise le même fichier plein cadre que le carreau du hero : carreau-anthracite-hd.webp.
