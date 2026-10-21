@@ -363,7 +363,7 @@ function init() {
   document.documentElement.classList.remove('has-motion');
   if (media.matches) return;
   try {
-    sequence = new TileSequence({sequenceLength:window.QUERO_CONFIG?.animation?.lengthVh || 600, mobileLength:window.QUERO_CONFIG?.animation?.mobileLengthVh || 520});
+    sequence = window.innerWidth<=900 && window.QueroMobileSequence ? new window.QueroMobileSequence() : new TileSequence({sequenceLength:window.QUERO_CONFIG?.animation?.lengthVh || 600, mobileLength:window.QUERO_CONFIG?.animation?.mobileLengthVh || 520});
     document.documentElement.classList.add('has-motion');
     sequence.mount();
   } catch (error) {
@@ -373,5 +373,6 @@ function init() {
   }
 }
 media.addEventListener('change', init);
+matchMedia('(max-width:900px)').addEventListener('change',init);
 init();
 })();

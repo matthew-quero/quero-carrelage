@@ -12,29 +12,28 @@ class PortraitRoom {
   else{const ax=b.x-c.x,ay=b.y-c.y,cx=b.x-a.x,cy=b.y-a.y;ctx.transform(ax,ay,cx,cy,a.x-ax,a.y-ay)}
   ctx.drawImage(this.image,0,0,1,1);ctx.restore();
  }
- draw(w,h,p,cam,grid){
-  this.last=[w,h,p,cam,grid];
+ draw(w,h,p,cam,grid,state){
+  this.last=[w,h,p,cam,grid,state];
   const clamp=x=>Math.max(0,Math.min(1,x)),smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
   this.canvas.style.opacity=p>=.4?'1':'0';
   if(p<.4||!this.image.complete||!this.image.naturalWidth)return;
   const ratio=Math.min(devicePixelRatio||1,1.5);
   if(this.canvas.width!==Math.round(w*ratio)||this.canvas.height!==Math.round(h*ratio)){this.canvas.width=Math.round(w*ratio);this.canvas.height=Math.round(h*ratio)}
   const ctx=this.ctx;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);
-  const fold=smooth((p-.4)/.09),angle=fold*Math.PI/2;
+  const fold=state?.fold??smooth((p-.4)/.09),angle=fold*Math.PI/2;
   const size=grid.size,gap=grid.gap,pitch=size+gap;
-  const xStart=grid.left-w/2,pivot=h*.52,depth=h-grid.top;
+  const xStart=grid.left-w/2,pivot=h*.5,depth=h-grid.top;
   const focal=Math.max(500,w*1.3),camera=cam*260,tiles=[];
-  const left=xStart+Math.floor((-w*.8-xStart)/pitch)*pitch-gap/2;
-  const right=left+Math.ceil(w*1.6/pitch)*pitch;
-  const rh=h*1.4,front=-focal*.8;
-  const walls=smooth((p-.49)/.065),ceiling=smooth((p-.555)/.06);
-  const project=v=>{const z=focal+v.z-camera;const scale=focal/Math.max(60,z);return{x:w/2+v.x*scale,y:h*.48+v.y*scale}};
+  const left=-w*.8,right=w*.8;
+  const rh=h,front=-focal*.8;
+  const walls=state?.walls??smooth((p-.49)/.065),ceiling=state?.ceiling??smooth((p-.555)/.06);
+  const project=v=>{const z=focal+v.z-camera;const scale=focal/Math.max(60,z);return{x:w/2+v.x*scale,y:h*.5+v.y*scale}};
   const add=(world,shade)=>{if(world.every(v=>focal+v.z-camera<=60))return;tiles.push({points:world.map(project),z:world.reduce((a,v)=>a+v.z,0)/4,shade})};
   // The first canvas frame is the same grid at the same coordinates. Each
   // square keeps its size, joint and texture while its plane folds backwards.
   const floorPoint=(x,y)=>{const dy=y-pivot;return{x,y:pivot+dy*Math.cos(angle),z:-dy*Math.sin(angle)}};
   for(let col=-3;col<grid.columns+4;col++)for(let row=0;row<12;row++){
-   const x=Math.max(left,xStart+col*pitch),x2=Math.min(right,xStart+col*pitch+size),y=grid.top+row*pitch-h*.48;
+   const x=Math.max(left,xStart+col*pitch),x2=Math.min(right,xStart+col*pitch+size),y=grid.top+row*pitch-h*.5;
    if(x2>x)add([floorPoint(x,y),floorPoint(x2,y),floorPoint(x2,y+size),floorPoint(x,y+size)],.22-.14*fold);
   }
   const plane=(point,umin,umax,vmin,vmax,shade)=>{
