@@ -51,7 +51,7 @@ class TileSequence {
       D = Math.round((ch + 3 * step - GAP) / 2);
       if (scene) scene.style.perspective = Math.round(vw <= 900 ? Math.max(900, vw * 1.8) : vw * 1.15) + 'px';
       const img = 'repeating-linear-gradient(180deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px),repeating-linear-gradient(90deg,#484848 0 ' + GAP + 'px,transparent ' + GAP + 'px ' + step + 'px)';
-      [back, wl, wr, cl].forEach(el => { if (el) { el.style.backgroundImage = img + ',url("./assets/photos/carreau-anthracite-hd.webp")'; el.style.backgroundSize = 'auto,auto,' + step + 'px ' + step + 'px'; } });
+      [back, wl, wr, cl].forEach(el => { if (el) { el.style.backgroundImage = img + ',url("./assets/photos/tile-surface.webp")'; el.style.backgroundSize = 'auto,auto,' + step + 'px ' + step + 'px'; } });
       if (wl) { wl.style.width = D + 'px'; wl.style.height = '0px'; wl.style.transform = 'rotateY(90deg)'; }
       if (wr) { wr.style.width = D + 'px'; wr.style.height = '0px'; wr.style.transform = 'rotateY(-90deg)'; }
       if (back) { back.style.height = '0px'; back.style.transform = 'translateZ(-' + D + 'px)'; }

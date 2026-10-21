@@ -75,3 +75,22 @@ Le site est livré en **mode test non indexable** (`noindex,nofollow` dans les p
 
 Les vérifications réellement exécutées sont consignées dans `docs/VERIFICATION.md`.
 Le projet d'origine complet se trouve dans `original/claude-design-original.zip`.
+
+## Livraison des fichiers et performances
+
+Les polices locales sont servies en WOFF2, sans changement de glyphes. Les photos
+sont servies en WebP ; les pages de prestations choisissent une largeur de 800 ou
+1672 pixels selon l’écran. Les originaux restent disponibles dans le dépôt.
+Le même carreau dispose d’une texture de 768 pixels sur mobile et 1254 pixels sur
+ordinateur. La pièce 3D est initialisée à son apparition, sans compilation GPU
+pendant le premier affichage du hero.
+
+Après une modification de `assets/fonts.css`, `assets/site.css` ou
+`assets/responsive.css`, exécuter `node scripts/prepare-home.cjs`. Cette commande
+intègre ces styles dans la page d’accueil pour éviter trois requêtes qui bloquent
+son premier affichage. Les pages secondaires conservent les feuilles partagées.
+Pour régénérer les variantes d’images et de polices :
+`python scripts/optimize-assets.py` (Pillow et fontTools avec WOFF2 requis).
+
+L’indexation reste bloquée pendant la phase de test. Les durées de cache HTTP
+sont celles de GitHub Pages ; aucun service worker n’est ajouté.

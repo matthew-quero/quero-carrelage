@@ -5,7 +5,7 @@ class PortraitRoom {
   this.canvas=document.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');this.canvas.dataset.renderer='canvas2d';
   Object.assign(this.canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',opacity:'0'});
   host.append(this.canvas);this.ctx=this.canvas.getContext('2d');this.image=new Image();
-  this.image.onload=()=>{if(this.last)this.draw(...this.last)};this.image.src='./assets/photos/carreau-anthracite-hd.webp';
+  this.image.onload=()=>{if(this.last)this.draw(...this.last)};this.image.src='./assets/photos/tile-surface-mobile.webp';
  }
  triangle(a,b,c,second){const ctx=this.ctx;ctx.save();ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.closePath();ctx.clip();
   if(!second)ctx.transform(b.x-a.x,b.y-a.y,c.x-a.x,c.y-a.y,a.x,a.y);
@@ -97,7 +97,7 @@ class DepthRoom {
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
   gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.clearColor(0,0,0,0);
   this.image=new Image();this.image.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,this.texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,this.image);if(modern){gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR)}if(this.last)this.draw(...this.last)};
-  this.image.src='./assets/photos/carreau-anthracite-hd.webp';
+  this.image.src='./assets/photos/tile-surface-mobile.webp';
  }
  draw(w,h,p,cam,grid,state){
   this.last=[w,h,p,cam,grid,state];const gl=this.gl;

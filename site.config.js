@@ -9,15 +9,15 @@ window.QUERO_CONFIG = {
     posterUrl: '',
     // Photos de référence de la maquette Claude, à remplacer par les chantiers de Pascal.
     textures: [
-      './assets/photos/service-interieur.jpg',
-      './assets/photos/service-faience.jpg',
-      './assets/photos/service-faience.jpg',
-      './assets/photos/service-interieur.jpg',
-      './assets/photos/service-faience.jpg',
-      './assets/photos/service-interieur.jpg',
-      './assets/photos/service-terrasse.jpg',
-      './assets/photos/service-faience.jpg',
-      './assets/photos/service-faience.jpg'
+      './assets/photos/service-interieur.webp',
+      './assets/photos/service-faience.webp',
+      './assets/photos/service-faience.webp',
+      './assets/photos/service-interieur.webp',
+      './assets/photos/service-faience.webp',
+      './assets/photos/service-interieur.webp',
+      './assets/photos/service-terrasse.webp',
+      './assets/photos/service-faience.webp',
+      './assets/photos/service-faience.webp'
     ]
   },
   // Contact details are reconstructed in assets/contact.js.

@@ -17,12 +17,12 @@ class MobileSequence {
   root.classList.add('mobile-sequence');
   const rows=5,columns=7,anchorColumn=1,anchorRow=2;
   const items=[
-   ['Carrelage intérieur','carrelage-interieur.html','service-interieur.jpg',0,0],
-   ['Faïence murale','faience-douche.html','reference-01.jpg',0,3],
-   ['Douche à l’italienne','faience-douche.html#douche','service-faience.jpg',2,1],
-   ['Terrasse et dallage','terrasse-carrelage.html','service-terrasse.jpg',2,3],
-   ['Rénovation et neuf','carrelage-interieur.html#renovation','reference-02.jpg',4,0],
-   ['Mosaïque','faience-douche.html#mosaique','reference-03.jpg',4,3]
+   ['Carrelage intérieur','carrelage-interieur.html','service-interieur-800.webp',0,0],
+   ['Faïence murale','faience-douche.html','reference-01.webp',0,3],
+   ['Douche à l’italienne','faience-douche.html#douche','service-faience-800.webp',2,1],
+   ['Terrasse et dallage','terrasse-carrelage.html','service-terrasse-800.webp',2,3],
+   ['Rénovation et neuf','carrelage-interieur.html#renovation','reference-02.webp',4,0],
+   ['Mosaïque','faience-douche.html#mosaique','reference-03.webp',4,3]
   ];
   const cells=[],photos=[];grid.replaceChildren();
   for(let col=0;col<columns;col++)for(let row=0;row<rows;row++){
@@ -41,13 +41,15 @@ class MobileSequence {
    const title=document.createElement('strong');title.textContent=label;
    const action=document.createElement('span');action.textContent='Voir la prestation';
    caption.append(title,action);a.append(arrow,caption);block.append(a);grid.append(block);
-   photos.push({block,a,caption,arrow});
+   photos.push({block,a,caption,arrow,col,row});
   });
   const status=document.createElement('p');status.className='room-build-copy';status.textContent='Carrelage et faïence.';copy.append(status);
-  const room=new window.QueroPortraitRoom(scene);
+  // Compile the GPU program only when the folding room is reached.
+  let room;
   const oldRoom=q('[data-room]');oldRoom.style.display='none';
-  let dims,frame=0,titleState=false,destroyed=false,docked=false;
+  let dims,frame=0,titleState=false,destroyed=false,docked=false,textWidths=[];
   const location=hero.querySelector('.hero-location'),cta=hero.querySelector('.button-primary')?.parentElement;
+  const mobileBar=q('#mobile-call'),contact=q('#contact'),bar=q('[data-progress]');
   const measure=()=>{
    const w=window.innerWidth,h=window.innerHeight,hh=Math.ceil(header.getBoundingClientRect().height+10),ch=h-hh;
    root.style.setProperty('--header-height',hh+'px');root.style.setProperty('--sequence-overlap',ch+'px');
@@ -62,11 +64,16 @@ class MobileSequence {
    const carousel=Math.max(h*.8,travel*1.35),material=h*.28,build=h*.6,words=h*2.6,exit=h*.72;
    dims={w,h,hh,ch,size,width,travel,baseX,rotate,bridge,carousel,material,build,words,exit,total:carousel+material+build+words+exit};
    stage.style.height=ch+dims.total+'px';
+   textWidths=infos.map(el=>el.offsetWidth||300);
    schedule();
   };
   const render=()=>{
    frame=0;if(destroyed||!dims)return;
+   // Read geometry together, before changing any styles in this frame.
    const d=dims,y=Math.max(0,window.scrollY),heroY=wrap.getBoundingClientRect().top+y-d.hh;
+   const start=stage.getBoundingClientRect().top+y,elapsed=y-start;
+   const g=gap.getBoundingClientRect(),servicesTop=services.getBoundingClientRect().top,contactTop=contact.getBoundingClientRect().top;
+   const maxScroll=root.scrollHeight-d.h;
    const turn=clamp((y-heroY)/d.rotate),next=turn>.64;
    if(next!==titleState){
     titleState=next;
@@ -79,7 +86,6 @@ class MobileSequence {
    if(location)location.style.opacity=String(1-copyBlend);
    if(cta){cta.style.opacity=String(1-copyBlend);cta.style.pointerEvents=bridge>.7?'none':'';}
    hero.style.backgroundColor=`rgba(255,255,255,${1-blend})`;hero.style.pointerEvents=bridge>.7?'none':'';
-   const start=stage.getBoundingClientRect().top+y,elapsed=y-start;
    const bridgeActive=bridge>0&&elapsed<0;
    sticky.style.overflow=bridgeActive?'visible':'hidden';
    const offset=bridgeActive?Math.max(0,start-y-d.hh):0;
@@ -90,7 +96,7 @@ class MobileSequence {
    // the same scroll coordinate; its motion stays above the hero CTA.
    if(bridge>=1&&!docked){anchor.append(layer);docked=true;}
    else if(bridge<1&&docked){gap.append(layer);docked=false;}
-   const g=gap.getBoundingClientRect(),side=Math.min(d.w*.42,(g.height-20)/Math.SQRT2);
+   const side=Math.min(d.w*.42,(g.height-20)/Math.SQRT2);
    const target={left:d.baseX+anchorColumn*(d.size+8),top:d.hh+anchorRow*(d.size+8),width:d.size};
    const targetSize=d.size;
    tile.style.width=(docked?targetSize:side+(targetSize-side)*blend)+'px';
@@ -109,8 +115,11 @@ class MobileSequence {
    const exit=clamp((elapsed-wordsStart-d.words)/d.exit);
    const shade=Math.round(255*(1-material));sticky.style.backgroundColor=`rgb(${shade},${shade},${shade})`;stage.style.backgroundColor=sticky.style.backgroundColor;
    flat.style.transform='none';flat.style.opacity=build>0?'0':'1';
-   if(build>0)room.draw(d.w,d.ch,.4,words*.7,{left:d.baseX-d.travel*pan,top:0,size:d.size,gap:8,columns},{fold:smooth(build),walls:smooth((build-.12)/.65),ceiling:smooth((build-.42)/.58)});
-   room.canvas.style.opacity=build>0?'1':'0';
+   if(build>0){
+    if(!room)room=new window.QueroPortraitRoom(scene);
+    room.draw(d.w,d.ch,.4,words*.7,{left:d.baseX-d.travel*pan,top:0,size:d.size,gap:8,columns},{fold:smooth(build),walls:smooth((build-.12)/.65),ceiling:smooth((build-.42)/.58)});
+   }
+   if(room)room.canvas.style.opacity=build>0?'1':'0';
    scene.style.opacity=String(1-.22*exit);
    copy.style.opacity='1';copy.style.visibility=elapsed>=0?'visible':'hidden';
    status.style.opacity=String(elapsed>=d.carousel&&elapsed<wordsStart?material:0);
@@ -118,7 +127,7 @@ class MobileSequence {
    infos.forEach((el,i)=>{
     const t=u-i,visible=elapsed>=wordsStart&&t>=-.32&&t<=1;
     const enter=smooth((t+.32)/.32),leave=i===3?1:1-smooth((t-.65)/.35);
-    const natural=el.offsetWidth||300;
+    const natural=textWidths[i];
     const base=Math.min(1,(d.w-56)/(natural*1.14));
     const scale=base*(t<0?.86+.14*enter:1+.14*smooth(t));
     const opacity=visible?enter*leave:0;
@@ -127,10 +136,12 @@ class MobileSequence {
     el.style.opacity=String(opacity);el.style.visibility=opacity>.001?'visible':'hidden';
    });
    // Leave the final message in the room until the next section covers it.
-   photos.forEach(({block,a,caption,arrow})=>{
+   photos.forEach(({block,a,caption,arrow,col,row})=>{
     block.style.opacity=String(1-material);
     const active=(bridge>.6||elapsed>=-d.ch*.5)&&material<.1;
-    const r=a.getBoundingClientRect();
+    // Grid dimensions are known: avoid a layout flush for every photo.
+    const left=d.baseX-d.travel*pan+col*(d.size+8),top=d.hh+row*(d.size+8);
+    const r={left,top,right:left+2*d.size+8,bottom:top+2*d.size+8};
     a.tabIndex=active&&r.left>=0&&r.right<=d.w&&r.top>=d.hh&&r.bottom<=d.h?0:-1;
     a.style.pointerEvents=active?'auto':'none';a.setAttribute('aria-hidden',String(!active));
     // Keep complete labels inside the visible part of a large photo.
@@ -139,8 +150,8 @@ class MobileSequence {
     caption.style.opacity=space>=180?'1':'0';
     arrow.style.right=Math.max(16,r.right-d.w+16)+'px';arrow.style.opacity=space>=70?'1':'0';
    });
-   const mobileBar=q('#mobile-call');if(mobileBar)mobileBar.hidden=services.getBoundingClientRect().top>d.hh+d.ch*.3||q('#contact').getBoundingClientRect().top<d.h;
-   const bar=q('[data-progress]');if(bar)bar.style.width=100*clamp(y/(root.scrollHeight-d.h||1))+'%';
+   if(mobileBar)mobileBar.hidden=servicesTop>d.hh+d.ch*.3||contactTop<d.h;
+   if(bar)bar.style.width=100*clamp(y/(maxScroll||1))+'%';
   };
   const schedule=()=>{if(!frame&&!destroyed)frame=requestAnimationFrame(render)};
   const observer=new ResizeObserver(measure);observer.observe(header);
@@ -151,7 +162,7 @@ class MobileSequence {
    window.removeEventListener('scroll',schedule);window.removeEventListener('resize',measure);window.removeEventListener('load',measure);document.fonts?.removeEventListener('loadingdone',measure);
    marker.replaceWith(layer);layer.setAttribute('style',original.layerStyle);hero.setAttribute('style',original.heroStyle);wrap.replaceWith(hero);
    h1.innerHTML=original.title;intro.innerHTML=original.intro;h1.style.opacity='';intro.style.opacity='';if(location)location.style.opacity='';if(cta){cta.style.opacity='';cta.style.pointerEvents='';}
-   grid.replaceChildren(...original.grid);grid.style.transform='';grid.style.setProperty('--floor-material','0');scene.style.opacity='';scene.style.transform='';sticky.style.overflow='hidden';copy.style.visibility='';infos.forEach(el=>{el.style.opacity='0';el.style.visibility='hidden'});stage.setAttribute('style',original.stageStyle);flat.style.opacity='';status.remove();room.canvas.remove();oldRoom.style.display='';root.classList.remove('mobile-sequence');
+   grid.replaceChildren(...original.grid);grid.style.transform='';grid.style.setProperty('--floor-material','0');scene.style.opacity='';scene.style.transform='';sticky.style.overflow='hidden';copy.style.visibility='';infos.forEach(el=>{el.style.opacity='0';el.style.visibility='hidden'});stage.setAttribute('style',original.stageStyle);flat.style.opacity='';status.remove();room?.canvas.remove();oldRoom.style.display='';root.classList.remove('mobile-sequence');
   };
  }
 }

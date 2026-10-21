@@ -62,7 +62,7 @@
 }
 @media(max-width:900px){[data-plane]{backface-visibility:visible!important}}
 @media(max-width:900px){
- [data-room-inner]::after{content:"";position:absolute;left:0;top:100%;width:100%;height:var(--room-depth);transform-origin:50% 0%;transform:translateZ(var(--room-half-depth)) rotateX(90deg);background-image:repeating-linear-gradient(0deg,#484848 0 4px,transparent 4px var(--room-step)),repeating-linear-gradient(90deg,#484848 0 4px,transparent 4px var(--room-step)),url('./photos/carreau-anthracite-hd.webp');background-size:auto,auto,var(--room-step) var(--room-step);opacity:var(--room-floor-opacity,0);backface-visibility:visible}
+ [data-room-inner]::after{content:"";position:absolute;left:0;top:100%;width:100%;height:var(--room-depth);transform-origin:50% 0%;transform:translateZ(var(--room-half-depth)) rotateX(90deg);background-image:repeating-linear-gradient(0deg,#484848 0 4px,transparent 4px var(--room-step)),repeating-linear-gradient(90deg,#484848 0 4px,transparent 4px var(--room-step)),var(--tile-image);background-size:auto,auto,var(--room-step) var(--room-step);opacity:var(--room-floor-opacity,0);backface-visibility:visible}
 }
 .hero-location span+span::before{content:' · '}
 .place-name{white-space:nowrap}
@@ -98,7 +98,7 @@
  .mobile-sequence #haut .hero-intro{min-height:4.65em;font-size:16px!important;line-height:1.55!important;margin:0!important}
  .mobile-sequence #haut .hero-copy>div:last-child{margin-top:20px!important}
  .has-motion.mobile-sequence [data-grid]{grid-template-rows:repeat(5,var(--mobile-cell))!important;grid-auto-columns:var(--mobile-cell)!important;gap:8px!important}
- .has-motion.mobile-sequence [data-cell]{width:var(--mobile-cell)!important;height:var(--mobile-cell)!important;background:#242424 url('./photos/carreau-anthracite-hd.webp') center/cover;border:0}
+ .has-motion.mobile-sequence [data-cell]{width:var(--mobile-cell)!important;height:var(--mobile-cell)!important;background:#242424 var(--tile-image) center/cover;border:0}
  .mobile-service-tile{background-position:center;background-size:cover;padding:0!important;color:#fff}
  .mobile-service-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(transparent 15%,#0006 45%,#000d)}
  .mobile-tile-label{position:absolute;bottom:12px;left:12px;right:10px;display:grid;gap:7px;line-height:1.15}
@@ -150,5 +150,5 @@ html:not(.has-motion) .sequence-copy{display:none}
 @media(max-width:900px) and (max-height:680px){.mobile-photo-block .mobile-tile-label strong{font-size:18px}.mobile-photo-block .mobile-tile-label>span{font-size:11px}.mobile-photo-block .mobile-tile-label{bottom:14px}}
 
 @media(max-width:900px){
- .has-motion.mobile-sequence [data-tile],.has-motion.mobile-sequence [data-cell]{background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;filter:none!important}
+ .has-motion.mobile-sequence [data-tile],.has-motion.mobile-sequence [data-cell]{background-image:var(--tile-image)!important;background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;filter:none!important}
 }

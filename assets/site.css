@@ -1,3 +1,5 @@
+:root{--tile-image:url('./photos/tile-surface.webp')}
+@media(max-width:900px){:root{--tile-image:url('./photos/tile-surface-mobile.webp')}}
 
 :root{--ink:#1a1a1a;--paper:#fff;--muted:#4a4a4a;--line:#dededb;--header-height:57px;--font-title:'Chakra Petch',Arial,sans-serif;--font-body:'Barlow',Arial,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + 20px)}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button,a,input,select,textarea{ -webkit-tap-highlight-color:transparent}a,button{transition:background-color .18s ease,color .18s ease}a:hover{color:#666}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #878787!important;outline-offset:5px}input,textarea,select{min-width:0}button{min-height:48px}input,select,textarea{border-radius:0}p{text-wrap:pretty}h1,h2{text-wrap:balance}[hidden]{display:none!important}main{display:block}section,header,footer{min-width:0}section:target{scroll-margin-top:20px}
@@ -130,7 +132,7 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 #contact .contact-action[href]{font-family:var(--font-body)!important;font-style:normal!important;font-weight:500!important;font-size:22px!important;line-height:1.4!important;letter-spacing:0!important}
 
 /* Full-face mineral material: no magnified crop from a white product photo. */
-[data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:cover;background-position:center}
+[data-tile], [data-cell][style*="background:#1A1A1A"], [data-cell].material-slot {background-image:var(--tile-image)!important;background-size:cover;background-position:center}
 
 /* Prevent native scroll chaining/bounce beyond the document edges. */
 html,body{overscroll-behavior-y:none}
@@ -138,6 +140,6 @@ html,body{overscroll-behavior-y:none}
 [data-info]{width:max-content!important;max-width:none!important;white-space:nowrap;text-wrap:nowrap;font-size:clamp(30px,4.2vw,66px);text-align:center}
 @media(max-width:760px){[data-info]{font-size:clamp(22px,6vw,38px)!important}}
 /* Empty material tiles throughout the mosaic, then a full tiled floor. */
-[data-cell]:empty{background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:cover;background-position:center}
+[data-cell]:empty{background-image:var(--tile-image)!important;background-size:cover;background-position:center}
 [data-cell]{position:relative}
-[data-cell]::after{content:"";position:absolute;inset:0;background:#303030 url('./photos/carreau-anthracite-hd.webp') center/cover;opacity:var(--floor-material,0);pointer-events:none;z-index:3}
+[data-cell]::after{content:"";position:absolute;inset:0;background:#303030 var(--tile-image) center/cover;opacity:var(--floor-material,0);pointer-events:none;z-index:3}

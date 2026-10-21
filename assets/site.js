@@ -28,15 +28,25 @@ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener(
   focus.focus({ preventScroll:true });
   history.replaceState(null,'', hash);
 }));
-// Place actual texture files in assets/ and list their paths in site.config.js.
-(config.animation?.textures || []).slice(0,9).forEach((url, i) => {
+// The portrait storyboard has its own smaller photos. Do not also download
+// the desktop set, or compete with the hero texture before the first paint.
+function loadDesktopTextures() {
+ if (window.innerWidth <= 900) return;
+ (config.animation?.textures || []).slice(0,9).forEach((url, i) => {
   const texture = document.querySelector(`[data-texture="${i+1}"]`);
   const src = localAsset(url);
   if (!texture || !src) return;
+  if (texture.dataset.loadedSource === src) return;
+  texture.dataset.loadedSource = src;
   const image = new Image();
+  image.fetchPriority = 'low'; image.decoding = 'async';
   image.onload = () => { texture.style.backgroundImage = `url(${JSON.stringify(src)})`; };
   image.src = src;
-});
+ });
+}
+if (document.readyState === 'complete') loadDesktopTextures();
+else window.addEventListener('load', loadDesktopTextures, {once:true});
+matchMedia('(max-width:900px)').addEventListener('change', loadDesktopTextures);
 const form = $('#quote-form');
 const status = $('#form-status');
 const email = window.QUERO_CONTACT.email;

@@ -1,7 +1,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../assets/mobile-sequence.js'),'utf8');
 for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
- let y=0,frames=[],listeners={},paint=[];const hh=71,ch=h-hh;
+ let y=0,frames=[],listeners={},paint=[],roomMounts=0;const hh=71,ch=h-hh;
  class E{
   constructor(name=''){this.name=name;this.children=[];this.style={setProperty(k,v){this[k]=v}};this.dataset={};this.attrs={};this.innerHTML='';this.textContent='';this.classList={add(){},remove(){}}}
   append(...xs){for(const x of xs){x.remove();this.children.push(x);x.parent=this}}
@@ -33,10 +33,11 @@ for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
  root.scrollHeight=stageStart+total+ch*3;
  const nodes={'#haut':hero,'[data-hero-tile-space]':gap,'[data-stage]':stage,'[data-sticky]':sticky,'[data-grid]':grid,'[data-flat]':flat,'[data-scene]':scene,'[data-copy]':copy,'[data-tile]':tile,'[data-tilelayer]':layer,'.hero-intro':intro,'#savoir-faire':services,'#site-header':header,'[data-room]':oldRoom,'#mobile-call':call,'#contact':contact,'[data-progress]':bar};
  const doc={documentElement:root,querySelector:s=>nodes[s],querySelectorAll:s=>s==='[data-info]'?infos:[],createElement:s=>new E(s),createComment:()=>new E('comment'),fonts:{addEventListener(){},removeEventListener(){}}};
- class Room{constructor(){this.canvas=new E('canvas');scene.append(this.canvas)}draw(...args){paint=args}}
+ class Room{constructor(){roomMounts++;this.canvas=new E('canvas');scene.append(this.canvas)}draw(...args){paint=args}}
  const context={document:doc,window:{innerWidth:w,innerHeight:h,get scrollY(){return y},addEventListener(n,f){listeners[n]=f},removeEventListener(){},QueroPortraitRoom:Room},requestAnimationFrame:f=>(frames.push(f),frames.length),cancelAnimationFrame(){frames=[]},ResizeObserver:class{observe(){}disconnect(){}},console};
  vm.runInNewContext(source,context);const sequence=new context.window.QueroMobileSequence;sequence.mount();
  const flush=()=>{const pending=frames;frames=[];pending.forEach(f=>f())};flush();
+ assert.equal(roomMounts,0,'The room must not initialize during the hero paint');
  const snapshot=()=>JSON.stringify([tile.style,infos.map(x=>x.style),copy.children.at(-1).style,title.innerHTML,intro.innerHTML,grid.style]);
  const photoBlocks=grid.children.filter(x=>x.className==='mobile-photo-block');assert.equal(photoBlocks.length,6);
  const photoUrls=photoBlocks.map(x=>x.children[0].style.backgroundImage);assert.equal(new Set(photoUrls).size,6,'Every photo is unique');
@@ -57,6 +58,7 @@ for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
   assert(!/NaN|Infinity/.test(JSON.stringify(paint)),'Room geometry must be finite');
  }
  assert(seen.every(x=>x>.99),'Every message must have a full-opacity hold');
+ assert.equal(roomMounts,1,'The room initializes once, when needed, including reverse scroll');
  sequence.destroy();assert.equal(grid.children[0],original);assert.equal(hero.parent,main);assert.equal(layer.parent,host);assert.equal(title.innerHTML,'Original title');
  console.log(`PASS ${w}×${h}: 482 forward/back poses, bounded tile, continuous room copy, four readable holds and clean teardown`);
 }
