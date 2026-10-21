@@ -1,6 +1,6 @@
 # Pages et groupes de recherches — 15 octobre 2026
 
-Le site reste un prototype non indexable. Les groupes ci-dessous sont des intentions de recherche et des choix éditoriaux, pas une mesure de volumes, de difficulté ou une promesse de classement. Aucune donnée Search Console, Google Business Profile ou outil de mots-clés du compte n’a été fournie.
+L’accueil et les trois pages de prestations sont indexables depuis le 22 octobre 2026, à la demande du propriétaire. Les aperçus et démonstrations restent exclus. Les groupes ci-dessous sont des intentions de recherche et des choix éditoriaux, pas une mesure de volumes, de difficulté ou une promesse de classement. Aucune donnée Search Console, Google Business Profile ou outil de mots-clés du compte n’a été fournie.
 
 | Page | Recherches regroupées | Ce que le client doit y trouver | État |
 |---|---|---|---|
@@ -34,7 +34,7 @@ Les réponses utiles avant devis sont déjà réparties par prestation. Éviter 
 
 ## Avant indexation
 
-Finaliser les coordonnées légales et les contenus métier avec Pascal ; connecter le véritable Arazo ; remplacer les images de démonstration ; tester mobile et accessibilité ; valider le domaine final ; mettre à jour les URL canoniques ; retirer noindex/nofollow et Disallow ; publier un sitemap avec les seules pages finales. Vérifier la fiche Google Business Profile et relier le site. Ajouter des données structurées d’établissement uniquement avec les informations réelles nécessaires.
+Finaliser les coordonnées légales et les contenus métier avec Pascal ; connecter le véritable Arazo ; remplacer les images de démonstration ; tester mobile et accessibilité ; valider le domaine final ; adapter les URL canoniques et le sitemap si le domaine change. L’indexation est déjà autorisée sur les quatre pages commerciales ; le sitemap est disponible à `/quero-carrelage/sitemap.xml` et pourra être soumis à Search Console. Vérifier la fiche Google Business Profile et relier le site. Ajouter des données structurées d’établissement uniquement avec les informations réelles nécessaires.
 
 ## Sources consultées
 

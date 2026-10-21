@@ -1,2 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://matthew-quero.github.io/quero-carrelage/sitemap.xml

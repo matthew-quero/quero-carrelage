@@ -37,7 +37,7 @@ Puis ouvrir http://localhost:8000.
 - `faience-douche.html` : faïence, douche à l’italienne, crédence et mosaïque.
 - `terrasse-carrelage.html` : terrasse et dallage extérieur.
 
-Les tuiles utiles et la liste fixe renvoient à ces pages. Le plan de contenu et les recherches regroupées sont dans [docs/SEO-PAGES.md](docs/SEO-PAGES.md). Les pages restent non indexables pendant la phase de test.
+Les tuiles utiles et la liste fixe renvoient à ces pages. Le plan de contenu et les recherches regroupées sont dans [docs/SEO-PAGES.md](docs/SEO-PAGES.md). L’accueil et les trois pages de prestations sont ouverts à l’indexation.
 
 ## Configuration
 
@@ -62,7 +62,7 @@ Le site sera disponible à l’adresse affichée par GitHub après son déploiem
 Tous les chemins sont relatifs : le site peut vivre dans un sous-dossier de dépôt. Le fichier `.nojekyll` est inclus.
 Le dossier `original/` conserve le ZIP Claude Design inchangé. Il peut rester hors du dépôt publié.
 
-Le site est livré en **mode test non indexable** (`noindex,nofollow` dans les pages et `robots.txt`). Quand la vraie version est validée : supprimer ces directives, autoriser l'exploration, ajouter les URL finales dans un sitemap et un lien canonique.
+L’accueil et les trois pages de prestations sont indexables depuis le 22 octobre 2026. Chaque page déclare son URL canonique et `sitemap.xml` répertorie ces quatre URL. Les aperçus, démonstrations et pages légales restent en `noindex`. La présence dans Google dépend ensuite de son exploration et de son indexation ; le sitemap n’a pas été soumis à Search Console depuis ce projet.
 
 ## Ce qui demande encore vos éléments
 
@@ -92,5 +92,5 @@ son premier affichage. Les pages secondaires conservent les feuilles partagées.
 Pour régénérer les variantes d’images et de polices :
 `python scripts/optimize-assets.py` (Pillow et fontTools avec WOFF2 requis).
 
-L’indexation reste bloquée pendant la phase de test. Les durées de cache HTTP
+L’indexation des quatre pages commerciales est autorisée. Les durées de cache HTTP
 sont celles de GitHub Pages ; aucun service worker n’est ajouté.
