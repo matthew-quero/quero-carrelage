@@ -83,7 +83,7 @@ class MobileSequence {
    const exit=clamp((elapsed-wordsStart-d.words)/d.exit);
    const shade=Math.round(255*(1-material));sticky.style.backgroundColor=`rgb(${shade},${shade},${shade})`;stage.style.backgroundColor=sticky.style.backgroundColor;
    flat.style.transform='none';flat.style.opacity=build>0?'0':'1';
-   room.draw(d.w,d.ch,.4,words*.7,{left:-d.travel*pan,top:0,size:d.size,gap:8,columns:7},{fold:smooth(build),walls:smooth((build-.12)/.65),ceiling:smooth((build-.42)/.58)});
+   if(build>0)room.draw(d.w,d.ch,.4,words*.7,{left:-d.travel*pan,top:0,size:d.size,gap:8,columns:7},{fold:smooth(build),walls:smooth((build-.12)/.65),ceiling:smooth((build-.42)/.58)});
    room.canvas.style.opacity=build>0?'1':'0';
    scene.style.opacity=String(1-.22*exit);
    copy.style.opacity='1';copy.style.visibility=elapsed>=0?'visible':'hidden';
