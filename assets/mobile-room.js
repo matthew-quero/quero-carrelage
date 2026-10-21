@@ -23,12 +23,12 @@ class PortraitRoom {
   const fold=state?.fold??smooth((p-.4)/.09),angle=fold*Math.PI/2;
   const size=grid.size,gap=grid.gap,pitch=size+gap;
   const xStart=grid.left-w/2,pivot=h*.5,depth=h-grid.top;
-  const focal=Math.max(500,w*1.3),camera=cam*260,tiles=[];
+  const focal=Math.max(500,w*1.3),camera=cam*260,tiles=[];let group=0;
   const left=-w*.8,right=w*.8;
   const rh=h,front=-focal*.8;
   const walls=state?.walls??smooth((p-.49)/.065),ceiling=state?.ceiling??smooth((p-.555)/.06);
   const project=v=>{const z=focal+v.z-camera;const scale=focal/Math.max(60,z);return{x:w/2+v.x*scale,y:h*.5+v.y*scale}};
-  const add=(world,shade)=>{if(world.every(v=>focal+v.z-camera<=60))return;tiles.push({points:world.map(project),z:world.reduce((a,v)=>a+v.z,0)/4,shade})};
+  const add=(world,shade)=>{if(world.every(v=>focal+v.z-camera<=60))return;tiles.push({group,points:world.map(project),z:world.reduce((a,v)=>a+v.z,0)/4,shade})};
   // The first canvas frame is the same grid at the same coordinates. Each
   // square keeps its size, joint and texture while its plane folds backwards.
   const floorPoint=(x,y)=>{const dy=y-pivot;return{x,y:pivot+dy*Math.cos(angle),z:-dy*Math.sin(angle)}};
@@ -42,14 +42,16 @@ class PortraitRoom {
     if(b>a&&d>c)add([point(a,c),point(b,c),point(b,d),point(a,d)],shade);
    }
   };
+  group=1;
   if(walls>0){
    const top=pivot-rh*walls;
    plane((x,y)=>({x,y,z:depth}),left,right,top,pivot,.1);
    plane((z,y)=>({x:left,y,z}),front,depth,top,pivot,.18);
    plane((z,y)=>({x:right,y,z}),front,depth,top,pivot,.25);
   }
+  group=2;
   if(ceiling>0)plane((x,z)=>({x,y:pivot-rh,z}),left,right,depth-(depth-front)*ceiling,depth,.3);
-  tiles.sort((a,b)=>b.z-a.z);
+  tiles.sort((a,b)=>a.group-b.group||b.z-a.z);
   // Dark joints belong to the same rotating plane, rather than a replacement room.
   for(const t of tiles){const [a,b,c,d]=t.points;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();ctx.fillStyle='#484848';ctx.fill();this.triangle(a,b,d,false);this.triangle(b,c,d,true);if(t.shade){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();ctx.fillStyle=`rgba(0,0,0,${t.shade})`;ctx.fill()}}
  }

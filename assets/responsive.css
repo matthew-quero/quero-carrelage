@@ -124,3 +124,13 @@
  .mobile-sequence [data-flat]{display:block!important}
  .has-motion.mobile-sequence [data-grid]{width:max-content!important}
 }
+
+@media(max-width:900px){
+ .mobile-sequence #haut .hero-copy{display:flex;flex-direction:column;width:100%;min-height:calc(100svh - var(--header-height) - 52px)}
+ .mobile-sequence #haut .hero-tile-space{height:auto!important;min-height:clamp(150px,25svh,270px);flex:1}
+ .mobile-sequence #haut .hero-copy>div:last-child{flex:none}
+}
+@media(max-width:900px) and (max-height:680px){
+ .mobile-sequence #haut .hero-copy{min-height:calc(100svh - var(--header-height) - 32px)}
+ .mobile-sequence #haut .hero-tile-space{min-height:125px!important}
+}
