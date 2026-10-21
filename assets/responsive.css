@@ -136,3 +136,15 @@
 }
 
 html:not(.has-motion) .sequence-copy{display:none}
+
+/* Four grid cells form one photo; each photo is used once. */
+@media(max-width:900px){
+ .has-motion.mobile-sequence [data-grid]{grid-template-columns:repeat(13,var(--mobile-cell))!important;grid-auto-flow:row!important}
+ .mobile-photo-block{position:relative;width:calc(2 * var(--mobile-cell) + 8px);height:calc(2 * var(--mobile-cell) + 8px);z-index:2;overflow:hidden;will-change:opacity}
+ .mobile-photo-block .mobile-tile-label{bottom:20px;gap:10px;left:16px;right:16px}
+ .mobile-photo-block .mobile-tile-label strong{font-size:clamp(21px,5.6vw,32px);line-height:1.05}
+ .mobile-photo-block .mobile-tile-label>span{font-size:13px}
+ .mobile-photo-block .mobile-tile-arrow{width:36px;height:36px;font-size:25px;top:16px;right:16px}
+ [data-hero-continuation]{isolation:isolate}
+}
+@media(max-width:900px) and (max-height:680px){.mobile-photo-block .mobile-tile-label strong{font-size:18px}.mobile-photo-block .mobile-tile-label>span{font-size:11px}.mobile-photo-block .mobile-tile-label{bottom:14px}}
