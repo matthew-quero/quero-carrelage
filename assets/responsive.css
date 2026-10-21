@@ -148,3 +148,7 @@ html:not(.has-motion) .sequence-copy{display:none}
  [data-hero-continuation]{isolation:isolate}
 }
 @media(max-width:900px) and (max-height:680px){.mobile-photo-block .mobile-tile-label strong{font-size:18px}.mobile-photo-block .mobile-tile-label>span{font-size:11px}.mobile-photo-block .mobile-tile-label{bottom:14px}}
+
+@media(max-width:900px){
+ .has-motion.mobile-sequence [data-tile],.has-motion.mobile-sequence [data-cell]{background-image:url('./photos/carreau-anthracite-hd.webp')!important;background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;filter:none!important}
+}

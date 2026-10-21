@@ -73,11 +73,11 @@ class MobileSequence {
     h1.innerHTML=next?'<span class="hero-title-line">Carrelage</span><span class="hero-title-line">et faïence.</span>':original.title;
     intro.innerHTML=next?'Sols intérieurs, murs, douches et terrasses. Pascal Quéro vous accompagne, en rénovation et dans le neuf.':original.intro;
    }
-   const bridge=clamp((y-heroY-d.rotate)/d.bridge),blend=smooth(bridge);
+   const bridge=clamp((y-heroY-d.rotate)/d.bridge),blend=smooth(bridge),copyBlend=smooth(bridge/.45);
    const swap=1-Math.max(0,1-Math.abs(turn-.64)/.075);
-   h1.style.opacity=String(swap*(1-blend));intro.style.opacity=String(swap*(1-blend));
-   if(location)location.style.opacity=String(1-blend);
-   if(cta){cta.style.opacity=String(1-blend);cta.style.pointerEvents=bridge>.7?'none':'';}
+   h1.style.opacity=String(swap*(1-copyBlend));intro.style.opacity=String(swap*(1-copyBlend));
+   if(location)location.style.opacity=String(1-copyBlend);
+   if(cta){cta.style.opacity=String(1-copyBlend);cta.style.pointerEvents=bridge>.7?'none':'';}
    hero.style.backgroundColor=`rgba(255,255,255,${1-blend})`;hero.style.pointerEvents=bridge>.7?'none':'';
    const start=stage.getBoundingClientRect().top+y,elapsed=y-start;
    const bridgeActive=bridge>0&&elapsed<0;
