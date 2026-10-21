@@ -2,7 +2,7 @@
 (() => {
 class PortraitRoom {
  constructor(host) {
-  this.canvas=document.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');
+  this.canvas=document.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');this.canvas.dataset.renderer='canvas2d';
   Object.assign(this.canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',opacity:'0'});
   host.append(this.canvas);this.ctx=this.canvas.getContext('2d');this.image=new Image();
   this.image.onload=()=>{if(this.last)this.draw(...this.last)};this.image.src='./assets/photos/carreau-anthracite-hd.webp';
@@ -22,10 +22,12 @@ class PortraitRoom {
   const ctx=this.ctx;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);
   const fold=state?.fold??smooth((p-.4)/.09),angle=fold*Math.PI/2;
   const size=grid.size,gap=grid.gap,pitch=size+gap;
-  const xStart=grid.left-w/2,pivot=h*.5,depth=h-grid.top;
+  const xStart=grid.left-w/2,pivot=h*.5;
   const focal=Math.max(500,w*1.3),camera=cam*260,tiles=[];let group=0;
   const left=-w*.8,right=w*.8;
-  const rh=h,front=-focal*.8;
+  const rh=h,sin=Math.sin(angle),cos=Math.cos(angle),depth=(h-grid.top)*sin;
+  const front=Math.max(-focal*.8,camera-focal+80);
+  const floorY=z=>pivot-z*cos/Math.max(.001,sin);
   const walls=state?.walls??smooth((p-.49)/.065),ceiling=state?.ceiling??smooth((p-.555)/.06);
   const project=v=>{const z=focal+v.z-camera;const scale=focal/Math.max(60,z);return{x:w/2+v.x*scale,y:h*.5+v.y*scale}};
   const add=(world,shade)=>{if(world.every(v=>focal+v.z-camera<=60))return;tiles.push({group,points:world.map(project),z:world.reduce((a,v)=>a+v.z,0)/4,shade})};
@@ -34,7 +36,8 @@ class PortraitRoom {
   const floorPoint=(x,y)=>{const dy=y-pivot;return{x,y:pivot+dy*Math.cos(angle),z:-dy*Math.sin(angle)}};
   for(let col=-3;col<grid.columns+4;col++)for(let row=0;row<12;row++){
    const x=Math.max(left,xStart+col*pitch),x2=Math.min(right,xStart+col*pitch+size),y=grid.top+row*pitch-h*.5;
-   if(x2>x)add([floorPoint(x,y),floorPoint(x2,y),floorPoint(x2,y+size),floorPoint(x,y+size)],.22-.14*fold);
+   const maxY=sin>.001?pivot+(focal-camera-80)/sin:Infinity,y2=Math.min(y+size,maxY);
+   if(x2>x&&y2>y)add([floorPoint(x,y),floorPoint(x2,y),floorPoint(x2,y2),floorPoint(x,y2)],.22-.14*fold);
   }
   const plane=(point,umin,umax,vmin,vmax,shade)=>{
    for(let u=umin;u<umax;u+=pitch)for(let v=vmin;v<vmax;v+=pitch){
@@ -44,13 +47,13 @@ class PortraitRoom {
   };
   group=1;
   if(walls>0){
-   const top=pivot-rh*walls;
-   plane((x,y)=>({x,y,z:depth}),left,right,top,pivot,.1);
-   plane((z,y)=>({x:left,y,z}),front,depth,top,pivot,.18);
-   plane((z,y)=>({x:right,y,z}),front,depth,top,pivot,.25);
+   const height=rh*walls;
+   plane((x,rise)=>({x,y:floorY(depth)-rise,z:depth}),left,right,0,height,.1);
+   plane((z,rise)=>({x:left,y:floorY(z)-rise,z}),front,depth,0,height,.18);
+   plane((z,rise)=>({x:right,y:floorY(z)-rise,z}),front,depth,0,height,.25);
   }
   group=2;
-  if(ceiling>0)plane((x,z)=>({x,y:pivot-rh,z}),left,right,depth-(depth-front)*ceiling,depth,.3);
+  if(ceiling>0)plane((x,z)=>({x,y:floorY(z)-rh*walls,z}),left,right,depth-(depth-front)*ceiling,depth,.3);
   tiles.sort((a,b)=>a.group-b.group||b.z-a.z);
   // Dark joints belong to the same rotating plane, rather than a replacement room.
   for(const t of tiles){const [a,b,c,d]=t.points;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();ctx.fillStyle='#484848';ctx.fill();this.triangle(a,b,d,false);this.triangle(b,c,d,true);if(t.shade){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();ctx.fillStyle=`rgba(0,0,0,${t.shade})`;ctx.fill()}}
@@ -66,7 +69,7 @@ class DepthRoom {
   host.append(canvas);
   const gl=canvas.getContext('webgl2',{alpha:true,antialias:true})||canvas.getContext('webgl',{alpha:true,antialias:true});
   if(!gl){canvas.remove();return new PortraitRoom(host)}
-  this.canvas=canvas;this.gl=gl;
+  this.canvas=canvas;this.gl=gl;canvas.dataset.renderer='webgl';
   const modern=typeof WebGL2RenderingContext!=='undefined'&&gl instanceof WebGL2RenderingContext;
   const prefix=modern?'#version 300 es\n':'';
   const vertex=prefix+`precision highp float;
