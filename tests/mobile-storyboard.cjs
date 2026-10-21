@@ -29,7 +29,7 @@ for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
  const services=new E('services'),contact=new E('contact'),header=new E('header'),bar=new E('bar'),call=new E('call');
  const infos=Array.from({length:4},(_,i)=>new E('info'+i));
  const original=new E('original');grid.append(original);host.append(layer,main);main.append(hero,stage,services,contact);hero.append(title,gap,intro);layer.append(tile);stage.append(sticky);sticky.append(scene,copy);scene.append(flat,oldRoom);flat.append(grid);copy.append(...infos);title.innerHTML='Original title';intro.innerHTML='Original intro';
- const rotate=Math.min(360,h*.44),bridge=h*.55,size=(ch-32)/5,travel=Math.max(0,13*size+96+(w/2-(size+8)-size/2)-w),carousel=Math.max(h*.8,travel*1.35),material=h*.28,build=h*.6,words=h*2.6,exit=h*.72,total=carousel+material+build+words+exit,stageStart=hh+rotate+bridge;
+ const rotate=Math.min(360,h*.44),bridge=h*.55,size=(ch-32)/5,travel=Math.max(0,7*size+48+(w/2-(size+8)-size/2)-w),carousel=Math.max(h*.8,travel*1.35),material=h*.28,build=h*.6,words=h*2.6,exit=h*.72,total=carousel+material+build+words+exit,stageStart=hh+rotate+bridge;
  root.scrollHeight=stageStart+total+ch*3;
  const nodes={'#haut':hero,'[data-hero-tile-space]':gap,'[data-stage]':stage,'[data-sticky]':sticky,'[data-grid]':grid,'[data-flat]':flat,'[data-scene]':scene,'[data-copy]':copy,'[data-tile]':tile,'[data-tilelayer]':layer,'.hero-intro':intro,'#savoir-faire':services,'#site-header':header,'[data-room]':oldRoom,'#mobile-call':call,'#contact':contact,'[data-progress]':bar};
  const doc={documentElement:root,querySelector:s=>nodes[s],querySelectorAll:s=>s==='[data-info]'?infos:[],createElement:s=>new E(s),createComment:()=>new E('comment'),fonts:{addEventListener(){},removeEventListener(){}}};

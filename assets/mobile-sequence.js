@@ -15,14 +15,14 @@ class MobileSequence {
   const wrap=document.createElement('div');wrap.className='hero-scroll';hero.before(wrap);wrap.append(hero);
   gap.append(layer);Object.assign(layer.style,{position:'absolute',inset:'0',width:'100%',height:'100%',overflow:'visible'});
   root.classList.add('mobile-sequence');
-  const rows=5,columns=13,anchorColumn=1,anchorRow=2;
+  const rows=5,columns=7,anchorColumn=1,anchorRow=2;
   const items=[
    ['Carrelage intérieur','carrelage-interieur.html','service-interieur.jpg',0,0],
-   ['Faïence murale','faience-douche.html','reference-01.jpg',2,3],
-   ['Douche à l’italienne','faience-douche.html#douche','service-faience.jpg',4,1],
-   ['Terrasse et dallage','terrasse-carrelage.html','service-terrasse.jpg',6,3],
-   ['Rénovation et neuf','carrelage-interieur.html#renovation','reference-02.jpg',8,0],
-   ['Mosaïque','faience-douche.html#mosaique','reference-03.jpg',10,2]
+   ['Faïence murale','faience-douche.html','reference-01.jpg',0,3],
+   ['Douche à l’italienne','faience-douche.html#douche','service-faience.jpg',2,1],
+   ['Terrasse et dallage','terrasse-carrelage.html','service-terrasse.jpg',2,3],
+   ['Rénovation et neuf','carrelage-interieur.html#renovation','reference-02.jpg',4,0],
+   ['Mosaïque','faience-douche.html#mosaique','reference-03.jpg',4,3]
   ];
   const cells=[],photos=[];grid.replaceChildren();
   for(let col=0;col<columns;col++)for(let row=0;row<rows;row++){
