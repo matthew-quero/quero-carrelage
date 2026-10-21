@@ -134,3 +134,5 @@
  .mobile-sequence #haut .hero-copy{min-height:calc(100svh - var(--header-height) - 32px)}
  .mobile-sequence #haut .hero-tile-space{min-height:125px!important}
 }
+
+html:not(.has-motion) .sequence-copy{display:none}

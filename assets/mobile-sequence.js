@@ -101,20 +101,20 @@ class MobileSequence {
     el.style.opacity=String(opacity);el.style.visibility=opacity>.001?'visible':'hidden';
    });
    // Leave the final message in the room until the next section covers it.
-   cells.forEach(cell=>{const a=cell.querySelector('a');if(!a)return;const active=elapsed>=-d.ch*.5&&material<.1;a.tabIndex=active?0:-1;a.style.pointerEvents=active?'auto':'none';a.setAttribute('aria-hidden',String(!active));});
+   cells.forEach(cell=>{const a=cell.querySelector('a');if(!a)return;const active=elapsed>=-d.ch*.5&&material<.1;const r=a.getBoundingClientRect();a.tabIndex=active&&r.left>=0&&r.right<=d.w&&r.top>=d.hh&&r.bottom<=d.h?0:-1;a.style.pointerEvents=active?'auto':'none';a.setAttribute('aria-hidden',String(!active));});
    const mobileBar=q('#mobile-call');if(mobileBar)mobileBar.hidden=services.getBoundingClientRect().top>d.hh+d.ch*.3||q('#contact').getBoundingClientRect().top<d.h;
    const bar=q('[data-progress]');if(bar)bar.style.width=100*clamp(y/(root.scrollHeight-d.h||1))+'%';
   };
   const schedule=()=>{if(!frame&&!destroyed)frame=requestAnimationFrame(render)};
   const observer=new ResizeObserver(measure);observer.observe(header);
   window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',measure,{passive:true});window.addEventListener('load',measure);document.fonts?.addEventListener('loadingdone',measure);
-  measure();render();
+  measure();
   this.destroy=()=>{
    destroyed=true;cancelAnimationFrame(frame);observer.disconnect();
    window.removeEventListener('scroll',schedule);window.removeEventListener('resize',measure);window.removeEventListener('load',measure);document.fonts?.removeEventListener('loadingdone',measure);
    marker.replaceWith(layer);layer.setAttribute('style',original.layerStyle);hero.setAttribute('style',original.heroStyle);wrap.replaceWith(hero);
    h1.innerHTML=original.title;intro.innerHTML=original.intro;h1.style.opacity='';intro.style.opacity='';
-   grid.replaceChildren(...original.grid);grid.style.transform='';stage.setAttribute('style',original.stageStyle);flat.style.opacity='';status.remove();room.canvas.remove();oldRoom.style.display='';root.classList.remove('mobile-sequence');
+   grid.replaceChildren(...original.grid);grid.style.transform='';grid.style.setProperty('--floor-material','0');scene.style.opacity='';copy.style.visibility='';infos.forEach(el=>{el.style.opacity='0';el.style.visibility='hidden'});stage.setAttribute('style',original.stageStyle);flat.style.opacity='';status.remove();room.canvas.remove();oldRoom.style.display='';root.classList.remove('mobile-sequence');
   };
  }
 }
