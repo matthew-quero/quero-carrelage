@@ -40,7 +40,9 @@ for(const [w,h]of [[320,568],[375,812],[390,844],[768,1024]]){
  assert.equal(roomMounts,0,'The room must not initialize during the hero paint');
  const snapshot=()=>JSON.stringify([tile.style,infos.map(x=>x.style),copy.children.at(-1).style,title.innerHTML,intro.innerHTML,grid.style]);
  const photoBlocks=grid.children.filter(x=>x.className==='mobile-photo-block');assert.equal(photoBlocks.length,6);
- const photoUrls=photoBlocks.map(x=>x.children[0].style.backgroundImage);assert.equal(new Set(photoUrls).size,6,'Every photo is unique');
+ const photoImages=photoBlocks.map(x=>x.children[0].children[0]);
+ assert(photoImages.every(x=>x.name==='img'&&x.alt&&x.loading==='lazy'),'Photos must be discoverable HTML images with alt text and lazy loading');
+ const photoUrls=photoImages.map(x=>x.src);assert.equal(new Set(photoUrls).size,6,'Every photo is unique');
  const occupied=new Set();
  for(const x of photoBlocks){assert(x.style.gridColumn.endsWith('/span 2')&&x.style.gridRow.endsWith('/span 2'),'Each photo spans four cells');
  const col=parseInt(x.style.gridColumn)-1,row=parseInt(x.style.gridRow)-1;assert(row>=0&&row+1<5);

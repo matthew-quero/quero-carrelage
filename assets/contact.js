@@ -11,4 +11,14 @@
     link.textContent = isPhone ? display : email;
     link.href = (isPhone ? 'tel:' : 'mailto:') + (isPhone ? phone : email);
   });
+  // Keep contact details out of the static HTML, as for the visible links.
+  // Google can read JSON-LD generated with JavaScript; capable bots can too.
+  document.querySelectorAll('[data-business-schema]').forEach(script => {
+    try {
+      const business = JSON.parse(script.textContent);
+      business.telephone = phone;
+      business.email = email;
+      script.textContent = JSON.stringify(business);
+    } catch (error) { console.error('Données d’entreprise invalides.', error); }
+  });
 })();

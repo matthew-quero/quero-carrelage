@@ -36,6 +36,10 @@ function loadDesktopTextures() {
   const texture = document.querySelector(`[data-texture="${i+1}"]`);
   const src = localAsset(url);
   if (!texture || !src) return;
+  if (texture.tagName === 'IMG') {
+    if (texture.src !== src) { texture.removeAttribute('srcset'); texture.src = src; }
+    return;
+  }
   if (texture.dataset.loadedSource === src) return;
   texture.dataset.loadedSource = src;
   const image = new Image();

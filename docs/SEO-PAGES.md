@@ -34,7 +34,7 @@ Les réponses utiles avant devis sont déjà réparties par prestation. Éviter 
 
 ## Avant indexation
 
-Finaliser les coordonnées légales et les contenus métier avec Pascal ; connecter le véritable Arazo ; remplacer les images de démonstration ; tester mobile et accessibilité ; valider le domaine final ; adapter les URL canoniques et le sitemap si le domaine change. L’indexation est déjà autorisée sur les quatre pages commerciales ; le sitemap est disponible à `/quero-carrelage/sitemap.xml` et pourra être soumis à Search Console. Vérifier la fiche Google Business Profile et relier le site. Ajouter des données structurées d’établissement uniquement avec les informations réelles nécessaires.
+Finaliser les coordonnées légales et les contenus métier avec Pascal ; connecter le véritable Arazo ; remplacer les images de démonstration ; tester mobile et accessibilité ; valider le domaine final ; adapter les URL canoniques et le sitemap si le domaine change. L’indexation est déjà autorisée sur les quatre pages commerciales ; le sitemap est disponible à `/quero-carrelage/sitemap.xml` et pourra être soumis à Search Console. Vérifier la fiche Google Business Profile et relier le site. Le JSON-LD d’établissement est présent sur ces quatre pages, avec les informations déjà publiées et des coordonnées ajoutées en JavaScript. Les images Open Graph et les images HTML du carrousel sont également en place.
 
 ## Sources consultées
 

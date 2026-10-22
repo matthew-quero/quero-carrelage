@@ -94,3 +94,22 @@ Pour régénérer les variantes d’images et de polices :
 
 L’indexation des quatre pages commerciales est autorisée. Les durées de cache HTTP
 sont celles de GitHub Pages ; aucun service worker n’est ajouté.
+
+## Métadonnées de recherche et de partage
+
+L’accueil et les trois pages de prestations déclarent l’établissement Quéro
+Carrelage en JSON-LD (`LocalBusiness` / `HomeAndConstructionBusiness`), avec la même
+identité `#entreprise`, l’adresse déjà publiée et la zone d’intervention. Le téléphone
+et l’e-mail sont injectés par `assets/contact.js` après reconstruction, comme les
+liens visibles : cette précaution ne protège pas contre les robots qui exécutent
+JavaScript. L’adresse et le SIRET concordent avec la fiche publique Societe.com
+445167737 consultée le 22 octobre 2026. Aucune validation de résultats enrichis
+Google ni de classement n’est revendiquée.
+
+Les quatre pages possèdent une image Open Graph de 1200 × 630 pixels. Pour la
+régénérer à partir du carreau et des polices du site :
+`python scripts/prepare-social.py` (PyMuPDF, Pillow et fontTools requis).
+
+Les photos du carrousel sont des éléments `img` avec dimensions, descriptions et
+chargement différé ; les motifs de carreaux restent décoratifs. Les images de
+services restent des illustrations, pas des photographies des chantiers de Pascal.

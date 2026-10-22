@@ -9,7 +9,7 @@
 <link rel="preload" as="image" href="./assets/photos/tile-surface.webp" media="(min-width:900.01px)" fetchpriority="high">
 <link rel="preload" as="font" href="./assets/fonts/font-3.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="./assets/fonts/font-0.woff2" type="font/woff2" crossorigin>
-<script src="./assets/contact.js?v=1" defer></script>
+<script src="./assets/contact.js?v=2" defer></script>
 <meta name="theme-color" content="#ffffff">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://matthew-quero.github.io/quero-carrelage/">
@@ -170,6 +170,7 @@ section[tabindex="-1"]:focus,h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{out
 .tile-caption>span{display:inline-block;transition:transform .2s ease}
 .tile-link:hover .tile-caption>span{transform:translate(3px,-3px)}
 .tile-photo{padding:0}
+img.tile-texture{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 .tile-photo .tile-texture{transition:transform .35s ease,filter .35s ease}
 .tile-photo:hover .tile-texture{transform:scale(1.045);filter:brightness(.8)}
 .tile-photo-arrow{position:absolute;right:16px;bottom:14px;font-family:var(--font-body);font-size:28px;color:white;opacity:0}
@@ -297,6 +298,9 @@ html,body{overscroll-behavior-y:none}
  .has-motion.mobile-sequence [data-grid]{grid-template-rows:repeat(5,var(--mobile-cell))!important;grid-auto-columns:var(--mobile-cell)!important;gap:8px!important}
  .has-motion.mobile-sequence [data-cell]{width:var(--mobile-cell)!important;height:var(--mobile-cell)!important;background:#242424 var(--tile-image) center/cover;border:0}
  .mobile-service-tile{background-position:center;background-size:cover;padding:0!important;color:#fff}
+ .mobile-service-tile>img.tile-texture{position:absolute;inset:0;z-index:0}
+ .mobile-service-tile::before{z-index:1;pointer-events:none}
+ .mobile-service-tile .mobile-tile-label,.mobile-service-tile .mobile-tile-arrow{z-index:2}
  .mobile-service-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(transparent 15%,#0006 45%,#000d)}
  .mobile-tile-label{position:absolute;bottom:12px;left:12px;right:10px;display:grid;gap:7px;line-height:1.15}
  .mobile-tile-label strong{font-family:var(--font-title);font-style:italic;text-transform:uppercase;font-size:clamp(14px,3.8vw,20px)}
@@ -353,9 +357,76 @@ html:not(.has-motion) .sequence-copy{display:none}
 </style>
 <!-- home-styles:end -->
 <script src="./site.config.js?v=11" defer></script>
-<script src="./assets/site.js?v=10" defer></script>
-<script src="./assets/mobile-room.js?v=8" defer></script><script src="./assets/mobile-sequence.js?v=7" defer></script><script src="./assets/sequence.js?v=19" defer></script>
-<script src="./assets/navigation.js?v=1" defer></script></head>
+<script src="./assets/site.js?v=11" defer></script>
+<script src="./assets/mobile-room.js?v=8" defer></script><script src="./assets/mobile-sequence.js?v=8" defer></script><script src="./assets/sequence.js?v=19" defer></script>
+<script src="./assets/navigation.js?v=1" defer></script>
+<meta property="og:image" content="https://matthew-quero.github.io/quero-carrelage/assets/social/quero-carrelage-1200x630.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Quéro Carrelage — Pascal Quéro, carrelage et faïence à Châtelaudren-Plouagat">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Quéro Carrelage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://matthew-quero.github.io/quero-carrelage/assets/social/quero-carrelage-1200x630.jpg">
+<script type="application/ld+json" data-business-schema>
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "LocalBusiness",
+    "HomeAndConstructionBusiness"
+  ],
+  "@id": "https://matthew-quero.github.io/quero-carrelage/#entreprise",
+  "name": "Quéro Carrelage",
+  "legalName": "Pascal Quéro",
+  "url": "https://matthew-quero.github.io/quero-carrelage/",
+  "description": "Pose de carrelage intérieur, de faïence, de douche à l’italienne et de terrasse, en rénovation et dans le neuf.",
+  "image": "https://matthew-quero.github.io/quero-carrelage/assets/social/quero-carrelage-1200x630.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1 rue de Mississipi",
+    "postalCode": "22170",
+    "addressLocality": "Châtelaudren-Plouagat",
+    "addressCountry": "FR"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Châtelaudren-Plouagat"
+    },
+    {
+      "@type": "City",
+      "name": "Guingamp"
+    },
+    {
+      "@type": "City",
+      "name": "Saint-Brieuc"
+    },
+    {
+      "@type": "City",
+      "name": "Pordic"
+    },
+    {
+      "@type": "City",
+      "name": "Binic"
+    },
+    {
+      "@type": "City",
+      "name": "Dinan"
+    },
+    {
+      "@type": "City",
+      "name": "Cancale"
+    }
+  ],
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "SIRET",
+    "value": "44516773700011"
+  }
+}
+</script>
+</head>
 <body>
 <a class="skip-link" href="#contact">Aller à la demande de devis</a>
 
@@ -430,48 +501,48 @@ html:not(.has-motion) .sequence-copy{display:none}
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
 
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html" aria-label="Voir le carrelage intérieur"><span class="tile-texture" data-texture="1" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html" aria-label="Voir le carrelage intérieur"><img class="tile-texture" data-texture="1" src="./assets/photos/service-interieur.webp" srcset="./assets/photos/service-interieur-800.webp 800w, ./assets/photos/service-interieur.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : sol intérieur en grands carreaux gris clair" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./carrelage-interieur.html"><span class="tile-caption">Carrelage intérieur<span aria-hidden="true"> ↗</span></span></a></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence murale"><span class="tile-texture" data-texture="2" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence murale"><img class="tile-texture" data-texture="2" src="./assets/photos/service-faience.webp" srcset="./assets/photos/service-faience-800.webp 800w, ./assets/photos/service-faience.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : douche à l’italienne avec faïence claire" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./faience-douche.html"><span class="tile-caption">Faïence murale<span aria-hidden="true"> ↗</span></span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#4A4A4A"></div>
 
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html#douche" aria-label="Voir la douche à l’italienne"><span class="tile-texture" data-texture="3" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html#douche" aria-label="Voir la douche à l’italienne"><img class="tile-texture" data-texture="3" src="./assets/photos/service-faience.webp" srcset="./assets/photos/service-faience-800.webp 800w, ./assets/photos/service-faience.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : douche à l’italienne avec faïence claire" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A"></div>
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html#renovation" aria-label="Voir la pose en rénovation"><span class="tile-texture" data-texture="4" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html#renovation" aria-label="Voir la pose en rénovation"><img class="tile-texture" data-texture="4" src="./assets/photos/service-interieur.webp" srcset="./assets/photos/service-interieur-800.webp 800w, ./assets/photos/service-interieur.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : sol intérieur en grands carreaux gris clair" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
 
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence et la douche"><span class="tile-texture" data-texture="5" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence et la douche"><img class="tile-texture" data-texture="5" src="./assets/photos/service-faience.webp" srcset="./assets/photos/service-faience-800.webp 800w, ./assets/photos/service-faience.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : douche à l’italienne avec faïence claire" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" data-slot="center" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;opacity:0"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./faience-douche.html#douche"><span class="tile-caption">Douche à l’italienne<span aria-hidden="true"> ↗</span></span></a></div>
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html" aria-label="Voir les sols intérieurs"><span class="tile-texture" data-texture="6" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./carrelage-interieur.html" aria-label="Voir les sols intérieurs"><img class="tile-texture" data-texture="6" src="./assets/photos/service-interieur.webp" srcset="./assets/photos/service-interieur-800.webp 800w, ./assets/photos/service-interieur.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : sol intérieur en grands carreaux gris clair" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A"></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./terrasse-carrelage.html"><span class="tile-caption">Terrasse et dallage<span aria-hidden="true"> ↗</span></span></a></div>
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./terrasse-carrelage.html" aria-label="Voir la terrasse et le dallage"><span class="tile-texture" data-texture="7" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./terrasse-carrelage.html" aria-label="Voir la terrasse et le dallage"><img class="tile-texture" data-texture="7" src="./assets/photos/service-terrasse.webp" srcset="./assets/photos/service-terrasse-800.webp 800w, ./assets/photos/service-terrasse.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="940" alt="Illustration : terrasse en dalles grises près d’un jardin" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#4A4A4A"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
 
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence murale"><span class="tile-texture" data-texture="8" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html" aria-label="Voir la faïence murale"><img class="tile-texture" data-texture="8" src="./assets/photos/service-faience.webp" srcset="./assets/photos/service-faience-800.webp 800w, ./assets/photos/service-faience.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : douche à l’italienne avec faïence claire" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./carrelage-interieur.html#renovation"><span class="tile-caption">Rénovation et neuf<span aria-hidden="true"> ↗</span></span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A"></div>
 
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#FFFFFF"></div>
-          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html#mosaique" aria-label="Voir la mosaïque"><span class="tile-texture" data-texture="9" aria-hidden="true"></span><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
+          <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;overflow:hidden"><a class="tile-link tile-photo" href="./faience-douche.html#mosaique" aria-label="Voir la mosaïque"><img class="tile-texture" data-texture="9" src="./assets/photos/service-faience.webp" srcset="./assets/photos/service-faience-800.webp 800w, ./assets/photos/service-faience.webp 1672w" sizes="(max-width: 900px) 320px, 450px" width="1672" height="941" alt="Illustration : douche à l’italienne avec faïence claire" loading="lazy" decoding="async"><span class="tile-photo-arrow" aria-hidden="true">↗</span></a></div>
           <div data-cell="1" style="width:calc((100svh - 73px)/3);height:calc((100svh - 73px)/3);border:1px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;display:flex;align-items:flex-end;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;text-transform:uppercase;font-size:clamp(13px,2.1vh,22px);line-height:1.06;letter-spacing:-0.02em"><a class="tile-link" href="./faience-douche.html#mosaique"><span class="tile-caption">Mosaïque<span aria-hidden="true"> ↗</span></span></a></div>
 
         </div>

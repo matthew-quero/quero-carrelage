@@ -31,16 +31,28 @@ class MobileSequence {
    cells.push(cell);grid.append(cell);
   }
   const anchor=cells[anchorColumn*rows+anchorRow];anchor.dataset.heroContinuation='1';
+  const photoAlts={
+   'service-interieur-800.webp':'Illustration : sol intérieur en grands carreaux gris clair',
+   'reference-01.webp':'Illustration : salle de bain avec faïence claire',
+   'service-faience-800.webp':'Illustration : douche à l’italienne avec faïence claire',
+   'service-terrasse-800.webp':'Illustration : terrasse en dalles grises près d’un jardin',
+   'reference-02.webp':'Illustration : baignoire et revêtement mural de salle de bain',
+   'reference-03.webp':'Illustration : sol de salle de bain en damier'
+  };
   items.forEach(([label,url,photo,col,row])=>{
    const block=document.createElement('div');block.className='mobile-photo-block';
    block.style.gridColumn=(col+1)+'/span 2';block.style.gridRow=(row+1)+'/span 2';
    const a=document.createElement('a');a.className='tile-link tile-photo mobile-service-tile';a.href='./'+url;
-   a.style.backgroundImage=`url('./assets/photos/${photo}')`;
+   const image=document.createElement('img');image.className='tile-texture';
+   image.src='./assets/photos/'+photo;image.alt=photoAlts[photo];
+   image.width=800;image.height=photo==='reference-03.webp'?1199:photo==='reference-02.webp'?534:photo==='reference-01.webp'?533:450;
+   image.loading='lazy';image.decoding='async';
+   a.setAttribute('aria-label',label+' — voir la prestation');
    const arrow=document.createElement('span');arrow.className='mobile-tile-arrow';arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');
    const caption=document.createElement('span');caption.className='mobile-tile-label';
    const title=document.createElement('strong');title.textContent=label;
    const action=document.createElement('span');action.textContent='Voir la prestation';
-   caption.append(title,action);a.append(arrow,caption);block.append(a);grid.append(block);
+   caption.append(title,action);a.append(image,arrow,caption);block.append(a);grid.append(block);
    photos.push({block,a,caption,arrow,col,row});
   });
   const status=document.createElement('p');status.className='room-build-copy';status.textContent='Carrelage et faïence.';copy.append(status);

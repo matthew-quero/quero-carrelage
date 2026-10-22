@@ -21,3 +21,5 @@ service-interieur.jpg, service-faience.jpg et service-terrasse.jpg : images gén
 Six photos distinctes, chacune sur un bloc carré de quatre cases : service-interieur.jpg (sol intérieur), reference-01.jpg (faïence), service-faience.jpg (douche), service-terrasse.jpg (terrasse), reference-02.jpg (rénovation), reference-03.jpg (mosaïque / damier). Ce sont toujours des illustrations, sans attribution à des chantiers de Pascal. Le matériau de toutes les cases utilise le même fichier plein cadre que le carreau du hero : carreau-anthracite-hd.webp.
 
 Les variantes WebP `service-*.webp`, `reference-01.webp` à `reference-03.webp` et `tile-surface*.webp` sont des versions compressées des fichiers déjà présents, sans nouvelle image ni changement de cadrage. Les variantes `-800` conservent les proportions d’origine.
+
+L’image de partage `assets/social/quero-carrelage-1200x630.jpg` reprend le carreau et les polices du site. Elle représente son identité visuelle, sans photographie de chantier ni attribution de réalisation.
