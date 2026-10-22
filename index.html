@@ -196,6 +196,11 @@ html,body{overscroll-behavior-y:none}
 [data-cell]{position:relative}
 [data-cell]::after{content:"";position:absolute;inset:0;background:#303030 var(--tile-image) center/cover;opacity:var(--floor-material,0);pointer-events:none;z-index:3}
 
+/* Feedback from the quote request API keeps the existing form layout. */
+.form-status[data-state="success"]{color:#7bd88f;border-color:currentColor}
+.form-status[data-state="error"]{color:#ff9a8f;border-color:currentColor}
+#quote-form button:disabled{opacity:.65;cursor:wait}
+
 /* Portrait composition: the copy leads, the tile occupies its own lower area. */
 @media(max-width:900px){
  html{scroll-padding-top:var(--header-height)}
@@ -356,8 +361,9 @@ html:not(.has-motion) .sequence-copy{display:none}
 
 </style>
 <!-- home-styles:end -->
-<script src="./site.config.js?v=11" defer></script>
-<script src="./assets/site.js?v=11" defer></script>
+<script src="./site.config.js?v=12" defer></script>
+<script src="./assets/site.js?v=12" defer></script>
+<script src="./assets/quote-form.js?v=1" defer></script>
 <script src="./assets/mobile-room.js?v=8" defer></script><script src="./assets/mobile-sequence.js?v=8" defer></script><script src="./assets/sequence.js?v=19" defer></script>
 <script src="./assets/navigation.js?v=1" defer></script>
 <meta property="og:image" content="https://matthew-quero.github.io/quero-carrelage/assets/social/quero-carrelage-1200x630.jpg">
@@ -596,14 +602,18 @@ html:not(.has-motion) .sequence-copy{display:none}
         
           <div id="arazo-form" hidden></div>
 <noscript><p>Activez JavaScript pour afficher les coordonnées et utiliser le formulaire.</p><style>#quote-form{display:none!important}</style></noscript>
-<form action="#contact" method="post" enctype="text/plain" id="quote-form" style="display:grid;gap:18px;max-width:560px">
+<form action="#contact" method="post" id="quote-form" aria-describedby="form-note" style="display:grid;gap:18px;max-width:560px">
             <label style="display:block">
               <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">Nom</span>
-              <input type="text" name="nom" autocomplete="name" maxlength="120" required="required" placeholder="Prénom et nom" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;border-radius:0" />
+              <input type="text" name="nom" autocomplete="name" minlength="2" maxlength="120" required="required" placeholder="Prénom et nom" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;border-radius:0" />
             </label>
             <label style="display:block">
-              <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">Téléphone</span>
-              <input type="tel" name="tel" autocomplete="tel" inputmode="tel" maxlength="40" required="required" placeholder="06 00 00 00 00" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;border-radius:0" />
+              <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">Téléphone (facultatif)</span>
+              <input type="tel" name="tel" autocomplete="tel" inputmode="tel" maxlength="40" placeholder="06 00 00 00 00" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;border-radius:0" />
+            </label>
+            <label style="display:block" for="email">
+              <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">E-mail</span>
+              <input id="email" type="email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="254" required="required" placeholder="prenom@exemple.fr" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;border-radius:0" />
             </label>
             <label style="display:block">
               <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">Commune</span>
@@ -625,9 +635,9 @@ html:not(.has-motion) .sequence-copy{display:none}
               <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF">Message</span>
               <textarea name="message" rows="4" maxlength="4000" placeholder="Surface approximative, état du support, délai souhaité" style="width:100%;margin-top:8px;border:1px solid #FFFFFF;background:#FFFFFF;font-size:17px;color:#1A1A1A;outline:none;padding:13px 14px;resize:vertical;border-radius:0"></textarea>
             </label>
-            <p id="form-note" class="form-note">Votre demande s’ouvrira dans votre messagerie. Vous pourrez la vérifier avant de l’envoyer.</p>
+            <p id="form-note" class="form-note">Devis gratuit. Votre demande est transmise à Pascal via Arazo.</p>
 <p id="form-status" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
-<button type="submit" style="border:1px solid #FFFFFF;background:#1A1A1A;color:#FFFFFF;padding:19px 22px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase;cursor:pointer;transition:background .2s ease,color .2s ease" class="hover-2 button-submit">Préparer ma demande par e-mail ↗</button>
+<button type="submit" style="border:1px solid #FFFFFF;background:#1A1A1A;color:#FFFFFF;padding:19px 22px;font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;font-size:16px;text-transform:uppercase;cursor:pointer;transition:background .2s ease,color .2s ease" class="hover-2 button-submit">Envoyer ma demande ↗</button>
           </form>
         
       </div>

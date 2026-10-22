@@ -23,6 +23,9 @@ window.QUERO_CONFIG = {
   // Contact details are reconstructed in assets/contact.js.
   arazo: {
     form: {
+      // API publique et destinataire fournis par Arazo. Ce UUID n'est pas un secret.
+      apiUrl: 'https://arazo.fr/api/demandes',
+      artisanId: '5074220b-3e4e-4577-831f-5a0304227a37',
       // Copier l'URL publique exacte fournie par Arazo. Aucun endpoint n'est présumé.
       hostedUrl: '',
       // Variante pour le véritable widget Arazo : recopier src et attributs du script fourni.

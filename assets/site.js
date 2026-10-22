@@ -1,4 +1,4 @@
-/* Site shell, honest email fallback, configurable Arazo mounting and video scrubbing. */
+/* Site shell, configurable Arazo mounting, real reviews and video scrubbing. */
 (() => {
 'use strict';
 const config = window.QUERO_CONFIG || {};
@@ -52,30 +52,6 @@ if (document.readyState === 'complete') loadDesktopTextures();
 else window.addEventListener('load', loadDesktopTextures, {once:true});
 matchMedia('(max-width:900px)').addEventListener('change', loadDesktopTextures);
 const form = $('#quote-form');
-const status = $('#form-status');
-const email = window.QUERO_CONTACT.email;
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  if (!form.reportValidity()) return;
-  const data = new FormData(form);
-  const phone = String(data.get('tel') || '').replace(/[\s().-]/g,'');
-  if (!/^\+?[0-9]{8,15}$/.test(phone)) {
-    status.textContent = 'Vérifiez le numéro de téléphone pour que je puisse vous rappeler.';
-    form.elements.tel.setAttribute('aria-invalid','true');
-    form.elements.tel.focus();
-    return;
-  }
-  form.elements.tel.removeAttribute('aria-invalid');
-  const text = `Bonjour Pascal,\n\nJe souhaite vous parler de mon projet.\n\nNom : ${data.get('nom')}\nTéléphone : ${data.get('tel')}\nCommune : ${data.get('commune') || 'Non précisée'}\nProjet : ${data.get('projet')}\n\n${data.get('message') || ''}\n`;
-  const mailto = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Demande de devis — Quéro Carrelage')}&body=${encodeURIComponent(text)}`;
-  status.replaceChildren(document.createTextNode('Votre message est préparé. Vérifiez-le et envoyez-le depuis votre messagerie. Si elle ne s’ouvre pas, '));
-  const retry = document.createElement('a');
-  retry.href = mailto; retry.textContent = 'ouvrez le message ici'; retry.style.textDecoration = 'underline';
-  status.append(retry,document.createTextNode(' ou contactez-moi par téléphone.'));
-  // Never clear the form: opening a mail client is not proof of delivery.
-  const open = document.createElement('a'); open.href = mailto; open.hidden = true;
-  document.body.append(open); open.click(); open.remove();
-});
 // Integrate only the exact URL or script supplied by Arazo; no invented API or identifiers.
 const arazo = config.arazo?.form || {};
 const mount = $('#arazo-form');
@@ -100,7 +76,7 @@ if (hosted) {
   }
   script.addEventListener('error', () => { mount.hidden = true; form.hidden = false; });
   mount.hidden = false; mount.append(script);
-  // Keep the usable fallback until the real widget has rendered content.
+  // Keep the native form until the real widget has rendered content.
   const observer = new MutationObserver(() => {
     if (mount.querySelector('iframe,form,input,button')) { form.hidden = true; observer.disconnect(); }
   });

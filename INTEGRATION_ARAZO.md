@@ -1,52 +1,55 @@
-# Brancher Arazo
+# Arazo — formulaire de devis
 
-Le récapitulatif fourni indique qu'Arazo dispose d'un formulaire public avec widget et page hébergée. Il ne contient ni le script de Quéro Carrelage, ni un identifiant public d'artisan, ni un contrat de flux d'avis. Aucun de ces éléments n'a été inventé.
+Le contrat public est fourni dans `BRANCHER_ARAZO.md` transmis le 22 octobre 2026.
+Le formulaire natif conserve sa présentation et envoie désormais une requête JSON
+à `https://arazo.fr/api/demandes`, pour le destinataire public
+`5074220b-3e4e-4577-831f-5a0304227a37`. Aucune clé privée n’est utilisée.
 
-## Formulaire hébergé
+## Champs envoyés
 
-Dans `site.config.js`, renseigner `arazo.form.hostedUrl` avec **l'URL publique exacte** du formulaire Quéro Carrelage copiée depuis Arazo. Le site monte une iframe et masque le formulaire par e-mail. Un lien d'ouverture directe reste disponible si l'intégration par iframe est refusée par le serveur Arazo. L'iframe est nommée pour les lecteurs d'écran et ne reçoit aucun identifiant privé.
+| Champ Arazo | Champ du formulaire | Règle du site |
+|---|---|---|
+| artisan | configuration `artisanId` | identifiant public du compte |
+| nom | nom | obligatoire, au moins deux caractères |
+| email | email | obligatoire pour recevoir le devis et permettre le suivi |
+| telephone | tel | facultatif ; espaces et séparateurs retirés |
+| ville | commune | facultatif |
+| type_travaux | projet | choix de la prestation |
+| message | message | facultatif |
 
-Le serveur Arazo doit autoriser l'intégration sur le domaine final si ses en-têtes `Content-Security-Policy` limitent les parents. La hauteur est réglable avec `iframeHeight`. Aucun redimensionnement par message inter-origines non vérifié n'est accepté.
+Le serveur accepte au moins un e-mail ou un téléphone, selon le document fourni.
+Le site demande un e-mail afin de permettre la chaîne de devis et relances décrite
+dans ce document. Les champs vides facultatifs sont omis du JSON.
 
-## Widget officiel
+## Comportement
 
-Autre possibilité : copier l'URL `src` du script réel dans `scriptUrl`, et ses attributs `data-*` dans `scriptAttributes`. Laisser `hostedUrl` vide. Le script est inséré dans `#arazo-form` ; adapter ce conteneur si le contrat officiel du widget attend un identifiant différent.
+`assets/quote-form.js` gère l’envoi. Le bouton et l’état `aria-busy` empêchent un
+double clic concurrent. Seule une réponse HTTP réussie affiche la confirmation.
+Un refus de l’API (champ `erreur`), une réponse non JSON, une erreur réseau ou un
+délai dépassé conservent les informations. Après un succès, le formulaire est vidé
+uniquement si le visiteur ne l’a pas modifié pendant l’envoi. Le délai est de vingt
+secondes ; un dépassement ne permet pas de savoir si le serveur a reçu la demande.
+Les messages ne promettent pas de délai de réponse de Pascal. Aucun envoi automatique
+par e-mail n’est effectué en repli.
 
-Exemple de configuration structurelle, à compléter avec les valeurs réelles :
+Le 22 octobre 2026, le préflight `OPTIONS` répond HTTP 204 avec les autorisations
+CORS pour `POST` et `content-type`. Un corps vide permet de vérifier le refus des
+requêtes invalides sans créer une demande. La création d’une vraie demande, la
+notification de Pascal et les automatisations du tableau de bord restent à vérifier
+avec un envoi réel autorisé. Les tests locaux simulent les réponses de l’API.
 
-```js
-form: {
-  hostedUrl: '',
-  scriptUrl: '',
-  scriptAttributes: {},
-  iframeHeight: 850
-}
-```
+## Autres modes
 
-Le formulaire par e-mail reste disponible jusqu'à l'apparition du widget. Un échec de chargement du script conserve cette solution de contact. Ne pas utiliser une URL d'administration, un jeton de session, une clé Supabase privée ou une clé Google dans ces fichiers publics.
-
-Le widget et la page Arazo sont responsables de la validation, de l'antispam et de la création effective de la demande. Ce site ne fait aucun POST vers un endpoint supposé.
+Les anciens emplacements `hostedUrl`, `scriptUrl`, `scriptAttributes` et
+`iframeHeight` restent disponibles pour un éventuel widget officiel. Ils sont vides
+dans la configuration active. Si un widget est configuré, le formulaire natif reste
+disponible jusqu’à l’apparition de son contenu.
 
 ## Avis
 
-Les avis sont placés dans la colonne de droite du contact, sous les coordonnées. En l'absence de données réelles, la section est masquée. Le site comprend un adaptateur pour un **flux JSON public que vous contrôlez**, à renseigner dans `arazo.reviews.feedUrl`. Ceci est un format de raccordement proposé pour le site, pas une API Arazo existante présumée.
-
-Format accepté : un tableau, ou un objet `{ "reviews": [...] }`. Chaque avis contient :
-
-| Champ | Type | Utilisation |
-|---|---|---|
-| `author` | chaîne | Nom public de l'auteur |
-| `text` | chaîne | Texte réel de l'avis |
-| `rating` | nombre de 1 à 5, facultatif | Affichage de la note |
-
-Aucune donnée illustrative n'est fournie comme faux avis. Les textes sont insérés via `textContent` pour éviter l'exécution de HTML provenant du flux.
-
-Le service qui publie ce flux doit gérer les droits de réutilisation, les attributions et les conditions du fournisseur de données. Il peut aussi exposer un widget officiel : dans ce cas, remplacer cet adaptateur par ce widget.
-
-Pour un flux sur un autre domaine, autoriser en lecture l'origine GitHub Pages au niveau CORS. Aucune authentification privée ne doit être nécessaire depuis le navigateur. L'absence de flux, une erreur ou un tableau vide masquent la section sans bloquer le contact.
-
-`googleUrl` peut contenir le lien réel vers la fiche Google, pour l'appel à l'action « Voir les avis sur Google ».
-
-## Repli provisoire
-
-Sans configuration Arazo, les champs du formulaire préparent un e-mail à l'adresse présente dans l'export d'origine. Le visiteur doit encore envoyer ce message depuis sa messagerie. Le texte et le bouton l'indiquent explicitement. Le formulaire ne dit jamais qu'une demande a été reçue et conserve les champs.
+Le document fourni ne contient ni URL de flux d’avis ni script d’affichage. La
+section reste donc masquée. L’adaptateur déjà présent peut lire un tableau JSON
+public, ou un objet `{ "reviews": [...] }`, avec `author`, `text` et une note
+`rating` facultative entre 1 et 5. Ce format est un contrat du site, pas une API
+Arazo inventée. Configurer `arazo.reviews.feedUrl` et, si disponible, `googleUrl`
+à partir des liens publics fournis par Arazo.

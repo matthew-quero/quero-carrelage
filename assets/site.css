@@ -144,3 +144,8 @@ html,body{overscroll-behavior-y:none}
 [data-cell]:empty{background-image:var(--tile-image)!important;background-size:cover;background-position:center}
 [data-cell]{position:relative}
 [data-cell]::after{content:"";position:absolute;inset:0;background:#303030 var(--tile-image) center/cover;opacity:var(--floor-material,0);pointer-events:none;z-index:3}
+
+/* Feedback from the quote request API keeps the existing form layout. */
+.form-status[data-state="success"]{color:#7bd88f;border-color:currentColor}
+.form-status[data-state="error"]{color:#ff9a8f;border-color:currentColor}
+#quote-form button:disabled{opacity:.65;cursor:wait}

@@ -25,7 +25,7 @@ Puis ouvrir http://localhost:8000.
 - Mise en page mobile, focus clavier, lien d'évitement, préférence de mouvement réduit et version statique sans JavaScript.
 - Neuf photos de référence de la maquette rétablies et hébergées localement dans la mosaïque ; elles ne représentent pas des réalisations de Pascal. Les carreaux de la pièce 3D restent noirs.
 - Polices Barlow et Chakra Petch fournies localement ; pas d'appel à Google Fonts.
-- Formulaire utilisable par brouillon d'e-mail tant que le véritable formulaire Arazo n'est pas configuré. Aucune fausse confirmation, aucune donnée stockée par ce site.
+- Formulaire natif connecté à l’API publique Arazo, avec e-mail obligatoire, confirmation sur réponse du serveur et conservation des champs en cas d’erreur.
 - Points de branchement du widget/formulaire Arazo et des avis réels dans la colonne de droite du contact.
 - Retrait de la bande entre accueil et mosaïque, des surtitres et des numéros. Prestations avec survol et liens vers le devis.
 - Fin de scène superposée avec la vraie section des prestations pour éviter le viewport noir vide.
@@ -47,7 +47,7 @@ Tout se règle dans `site.config.js` :
 - `animation.mobileLengthVh` : longueur sur écran étroit, 520 par défaut.
 - `animation.textures` : chemins de neuf vraies images, dans leur ordre dans la grille.
 - `animation.videoUrl` et `posterUrl` : vidéo à parcourir avec le scroll, en remplacement de l'animation CSS. Laisser vides pour le rendu d'origine.
-- `arazo.form` : URL publique exacte du formulaire hébergé, ou src et attributs du véritable script d'intégration Arazo.
+- `arazo.form` : API publique et identifiant du destinataire Arazo ; modes hébergé et widget également disponibles.
 - `arazo.reviews` : flux d'avis public normalisé et lien Google facultatif.
 
 Voir [INTEGRATION_ARAZO.md](INTEGRATION_ARAZO.md) pour les données attendues et [docs/VIDEO.md](docs/VIDEO.md) pour la vidéo.
@@ -66,7 +66,7 @@ L’accueil et les trois pages de prestations sont indexables depuis le 22 octob
 
 ## Ce qui demande encore vos éléments
 
-- Le vrai script ou lien public Arazo pour le compte Quéro Carrelage.
+- La vérification d’une vraie demande reçue dans le compte Arazo de Pascal et des notifications associées.
 - Le flux d'avis ou le vrai widget d'avis, s'il existe côté Arazo. Aucun avis n'a été inventé.
 - Les images réelles des carreaux / chantiers et la vidéo si le mode vidéo est retenu.
 - Les éléments encore indiqués « à compléter » dans les pages légales d'origine.
